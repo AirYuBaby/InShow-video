@@ -23,7 +23,7 @@ public class Swagger2 {
 	public Docket createRestApi() {
 		
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-				.apis(RequestHandlerSelectors.basePackage("com.Eriyuer.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.InShowVideo.controller"))
 				.paths(PathSelectors.any()).build();
 	}
 
