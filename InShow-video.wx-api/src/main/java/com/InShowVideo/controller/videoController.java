@@ -23,7 +23,7 @@ public class videoController extends BasicController{
 	private IVideoService iVideoService;
 	
 	@ApiOperation(value = "获取视频列表的接口")
-	@ApiImplicitParam(name="page", value="页码（从0开始）",dataType="int")
+	@ApiImplicitParam(name="page", value="页码（从0开始）",dataType = "query")
 	@PostMapping("/getByPage")
 	public JSONResult getVideoByPage(int page) {
 		System.out.println("page-----------"+page);
