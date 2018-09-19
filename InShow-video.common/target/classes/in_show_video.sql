@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost_3306
-Source Server Version : 50520
+Source Server Version : 50723
 Source Host           : localhost:3306
 Source Database       : in_show_video
 
 Target Server Type    : MYSQL
-Target Server Version : 50520
+Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-09-18 17:44:12
+Date: 2018-09-19 08:32:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,6 +46,8 @@ CREATE TABLE `bgm` (
 -- ----------------------------
 -- Records of bgm
 -- ----------------------------
+INSERT INTO `bgm` VALUES ('2001', '16516', '6516', 'kbk/kjkb/kk');
+INSERT INTO `bgm` VALUES ('2002', '312321', '656', 'jhbjvhj/klkk/');
 
 -- ----------------------------
 -- Table structure for `bgm_copy`
@@ -104,6 +106,8 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES ('1001', '4654656', '456', '456', '0', '0', '0', '0');
+INSERT INTO `users` VALUES ('1002', '15616516', '651651', '651', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `users_fans`
@@ -120,6 +124,7 @@ CREATE TABLE `users_fans` (
 -- ----------------------------
 -- Records of users_fans
 -- ----------------------------
+INSERT INTO `users_fans` VALUES ('453435433', '1002', '1001');
 
 -- ----------------------------
 -- Table structure for `users_like_videos`
@@ -180,6 +185,8 @@ CREATE TABLE `videos` (
 -- ----------------------------
 -- Records of videos
 -- ----------------------------
+INSERT INTO `videos` VALUES ('6516156156156', '1002', '2001', 'sfadsfasfdadfafd', '/userid/video/jijiji.mp4', '0.00', '222', '222', '/userid/video_cover/444.jpg', '0', '0', '2018-09-19 08:26:46', '0');
+INSERT INTO `videos` VALUES ('984651686161', '1001', '2001', 'baabbbdbgbksjbkg', '/userid/video/xxx.mp4', '0.00', '222', '222', '/userid/video_cover/sssss.jpg', '0', '0', '2018-09-19 08:23:35', '0');
 
 -- ----------------------------
 -- Table structure for `videos_topic`
