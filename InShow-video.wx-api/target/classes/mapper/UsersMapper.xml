@@ -3,8 +3,13 @@
 <mapper namespace="com.InShowVideo.mapper.UsersMapper">
   <resultMap id="BaseResultMap" type="com.InShowVideo.pojo.Users">
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
     <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="face_image" jdbcType="VARCHAR" property="faceImage" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="avatarUrl" jdbcType="VARCHAR" property="avatarurl" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="fans_counts" jdbcType="INTEGER" property="fansCounts" />
     <result column="follow_counts" jdbcType="INTEGER" property="followCounts" />
