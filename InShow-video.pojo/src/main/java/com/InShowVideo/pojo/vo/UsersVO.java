@@ -1,39 +1,35 @@
-package com.InShowVideo.pojo;
+package com.InShowVideo.pojo.vo;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-@ApiModel(value="用户对象",description="这是用户对象")
 @Table(name = "`users`")
-public class Users implements Serializable {
-	@Id
-	@ApiModelProperty(hidden=true)
+public class UsersVO implements Serializable {
+
     private String id;
-	
+
     private String openid;
-    @ApiModelProperty(value="用户名",name="username",example="Eriyeur",required=true)
+
     private String username;
-    @ApiModelProperty(hidden=true)
+
     private Integer gender;
-    @ApiModelProperty(hidden=true)
+
     private String avatarurl;
-    @ApiModelProperty(hidden=true)
+
     private String country;
-    @ApiModelProperty(hidden=true)
+
     private String province;
-    @ApiModelProperty(hidden=true)
+
     private String city;
-    
+
     private String nickname;
-    @ApiModelProperty(hidden=true)
+
     private Integer fansCounts;
-    @ApiModelProperty(hidden=true)
+
     private Integer followCounts;
-    @ApiModelProperty(hidden=true)
+
     private Integer receiveLikeCounts;
-    @ApiModelProperty(hidden=true)
+
     private Integer reportCounts;
 
     private static final long serialVersionUID = 1L;
