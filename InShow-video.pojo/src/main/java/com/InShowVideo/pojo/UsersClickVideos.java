@@ -3,14 +3,13 @@ package com.InShowVideo.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Table(name = "`users_fans`")
-public class UsersFans implements Serializable {
-	@Id
+@Table(name = "`users_click_videos`")
+public class UsersClickVideos implements Serializable {
     private String id;
 
     private String userId;
 
-    private String fanId;
+    private String videoId;
 
     private static final long serialVersionUID = 1L;
 
@@ -30,11 +29,11 @@ public class UsersFans implements Serializable {
         this.userId = userId;
     }
 
-    public String getFanId() {
-        return fanId;
+    public String getVideoId() {
+        return videoId;
     }
 
-    public void setFanId(String fanId) {
-        this.fanId = fanId;
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 }
