@@ -2,12 +2,10 @@ package com.InShowVideo.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.InShowVideo.mapper.VideosMapper;
 import com.InShowVideo.services.Impl.IVideoService;
 import com.InShowVideo.utils.JSONResult;
 import com.InShowVideo.utils.PagedResult;
@@ -57,9 +55,12 @@ public class videoController extends BasicController{
 		if(pageSize==null) {
 			pageSize=4;
 		}
+		PagedResult videoList = iVideoService.qureyMyLikeVideo(userId, page, pageSize);
+		return JSONResult.ok(videoList);
+	}
+	public JSONResult userLikevideo(String ulvId,String userId,String videoId) {
 		
 		return JSONResult.ok();
 	}
-	
 
 }

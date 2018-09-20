@@ -1,7 +1,6 @@
 package com.InShowVideo.pojo.vo;
 
 import java.util.Date;
-
 public class VideosVO {
     private String id;
 

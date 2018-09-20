@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.InShowVideo.mapper.VideosMapper;
 import com.InShowVideo.mapper.VideosMapperCustom;
@@ -17,28 +19,26 @@ import com.github.pagehelper.PageInfo;
 public class IVideoService implements videoService {
 	@Autowired
 	private VideosMapper videoMapper;
-	@Autowired
-	private VideosVO videosVO;
 	
 	private VideosMapperCustom videosMapperCustom;
 	
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
 	public PagedResult getAllVideos(int page) {
 		System.out.println("-------begin");
+		PageHelper.startPage(page, 4);
 		List<Videos> videos = videoMapper.selectAll();
 		System.out.println(videos);
 		System.out.println("----------开始分页");
-		PageInfo<Videos> pageList = new PageInfo<>(videos);
 		System.out.println("----------分");
 
 		PagedResult pagedResult = new PagedResult();
 		System.out.println("----------页");
 
-		pagedResult.setTotal(pageList.getPages());
 		System.out.println("----------啦");
 
 		pagedResult.setRows(videos);
 		pagedResult.setPage(page);
-		pagedResult.setRecords(pageList.getTotal());
 		System.out.println("-------end");
 		return pagedResult;
 	}
