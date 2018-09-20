@@ -2,7 +2,7 @@ package com.InShowVideo.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
+ 
 @Table(name = "`bgm_copy`")
 public class BgmCopy implements Serializable {
     private String id;

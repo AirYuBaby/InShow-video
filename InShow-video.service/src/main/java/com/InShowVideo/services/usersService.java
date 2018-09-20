@@ -1,7 +1,7 @@
 package com.InShowVideo.services;
 
 import com.InShowVideo.pojo.Users;
-
+ 
 public interface usersService {
 	/**
 	 * 根据用户id查找用户信息

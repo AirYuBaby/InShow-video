@@ -21,7 +21,7 @@ import com.InShowVideo.services.usersService;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
-
+ 
 @Service
 public class IUsersService implements usersService {
 	

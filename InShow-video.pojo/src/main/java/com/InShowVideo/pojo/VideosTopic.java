@@ -2,7 +2,7 @@ package com.InShowVideo.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
+ 
 @Table(name = "`videos_topic`")
 public class VideosTopic implements Serializable {
     private String id;

@@ -1,5 +1,5 @@
 package com.InShowVideo.pojo.vo;
-
+ 
 public class publisherVideo {
 	
 	private UsersVO publisher;

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.InShowVideo.utils.RedisOperator;
 
-
-
+ 
+ 
 @RestController
 public class BasicController {
 	@Autowired

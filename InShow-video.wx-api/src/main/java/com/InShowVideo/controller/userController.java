@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
+ 
 @RestController
 @Api(value="用户相关业务的接口",tags= {"用户相关业务的controller"})
 @RequestMapping("/user")

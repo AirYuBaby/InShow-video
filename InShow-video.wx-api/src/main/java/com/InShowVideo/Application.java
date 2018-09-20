@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import tk.mybatis.spring.annotation.MapperScan;
-
+ 
 @SpringBootApplication
 @MapperScan(basePackages="com.InShowVideo.mapper")
 @ComponentScan(basePackages= {"com.InShowVideo","org.n3r.idworker"})

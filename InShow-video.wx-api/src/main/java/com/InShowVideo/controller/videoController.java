@@ -14,7 +14,7 @@ import com.InShowVideo.utils.PagedResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-
+ 
 @RestController
 @Api(value="视频相关操作的接口", tags= {"视频相关业务的controller"})
 @RequestMapping("/video")

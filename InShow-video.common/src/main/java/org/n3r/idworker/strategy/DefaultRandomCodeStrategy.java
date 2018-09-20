@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.util.ArrayDeque;
 import java.util.BitSet;
 import java.util.Queue;
-
+ 
 public class DefaultRandomCodeStrategy implements RandomCodeStrategy {
     public static final int MAX_BITS = 1000000;
 

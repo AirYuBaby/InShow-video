@@ -1,5 +1,5 @@
 package com.InShowVideo.pojo;
-
+ 
 import java.io.Serializable;
 import javax.persistence.*;
 

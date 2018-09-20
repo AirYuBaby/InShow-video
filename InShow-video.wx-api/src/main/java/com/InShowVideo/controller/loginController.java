@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.InShowVideo.utils.AES_128_CBC;
 import com.InShowVideo.utils.HttpRequest;
 import com.InShowVideo.utils.JSONResult;
-
+ 
 public class loginController extends BasicController{
 //	@Autowired
 //	private userService service;

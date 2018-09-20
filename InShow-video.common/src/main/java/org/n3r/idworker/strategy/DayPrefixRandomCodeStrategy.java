@@ -2,7 +2,7 @@ package org.n3r.idworker.strategy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+ 
 public class DayPrefixRandomCodeStrategy extends DefaultRandomCodeStrategy {
     private final String dayFormat;
     private String lastDay;

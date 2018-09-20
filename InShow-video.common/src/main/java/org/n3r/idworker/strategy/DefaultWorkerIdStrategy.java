@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Properties;
 import java.util.Random;
-
+ 
 public class DefaultWorkerIdStrategy implements WorkerIdStrategy {
     static long workerIdBits = 10L;
     static long maxWorkerId = -1L ^ (-1L << workerIdBits);

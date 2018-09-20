@@ -3,7 +3,7 @@ package com.InShowVideo.pojo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-
+ 
 @Table(name = "`topics`")
 public class Topics implements Serializable {
     private String id;
