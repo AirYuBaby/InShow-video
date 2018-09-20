@@ -24,6 +24,11 @@ public interface usersService {
 	 * @param userId
 	 * @param fansId
 	 */
-	
 	public void fansPickusers(String userId,String fansId);
+	/**
+	 * 登陆.....老用户更新.....新用户写入
+	 * @param openid
+	 * @return
+	 */
+	public Users updataUser(Users user);
 }
