@@ -105,5 +105,27 @@ public class IUsersService implements usersService {
 		userMapper.addFollowersCounts(fansId);
 		
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public Users updataUser(Users user) {
+		if(StringUtils.isNoneBlank(user.getOpenid())) {
+			Example userExample = new Example(Users.class);
+			Criteria c = userExample.createCriteria();
+			c.andEqualTo("openid", user.getOpenid());
+			List<Users> u2 = userMapper.selectByExample(userExample);
+			if(u2.size()>0) {
+				user.setId(u2.get(0).getId());
+				System.out.println("----------------"+user.toString());
+				System.out.println("--------++++---------"+u2.toString());
+				userMapper.updateByPrimaryKey(user);
+				return user;
+			}else {
+				user.setId(sid.nextShort());
+				userMapper.insert(user);
+				return user;
+			}
+		}
+		return null;
+	}
 	
 }

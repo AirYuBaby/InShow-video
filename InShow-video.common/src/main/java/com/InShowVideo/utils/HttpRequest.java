@@ -18,7 +18,7 @@ public class HttpRequest {
 
 	// 处理http请求 requestUrl为请求地址 requestMethod请求方式，值为"GET"或"POST"
 	public static String httpRequest(String requestUrl, String requestMethod, String outputStr) {
-		StringBuffer buffer = null;
+		StringBuffer buffer = new StringBuffer();
 		try {
 			URL url = new URL(requestUrl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
