@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.InShowVideo.services.Impl.IVideoService;
+import com.InShowVideo.services.videoService;
 import com.InShowVideo.utils.JSONResult;
 import com.InShowVideo.utils.PagedResult;
 
@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/video")
 public class videoController extends BasicController{
 	@Autowired
-	private IVideoService iVideoService;
+	private videoService videoService;
 	
 	@ApiOperation(value = "获取视频列表的接口")
 	@ApiImplicitParam(name="page", value="页码（从0开始）",paramType = "query")
@@ -29,7 +29,7 @@ public class videoController extends BasicController{
 		System.out.println("page-----------"+page);
 		PagedResult result ;
 		if(page >= 0) {
-			result = iVideoService.getAllVideos(page);
+			result = videoService.getAllVideos(page);
 		}else {
 			return JSONResult.errorMsg("页码发生错误，你的小可爱取不到数据啦");
 		}
@@ -55,12 +55,19 @@ public class videoController extends BasicController{
 		if(pageSize==null) {
 			pageSize=4;
 		}
-		PagedResult videoList = iVideoService.qureyMyLikeVideo(userId, page, pageSize);
+		PagedResult videoList = videoService.qureyMyLikeVideo(userId, page, pageSize);
 		return JSONResult.ok(videoList);
 	}
-	public JSONResult userLikevideo(String ulvId,String userId,String videoId) {
+	@ApiOperation(value = "用户收藏视频的接口")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="userId", value="用户Id",paramType = "form"),
+		@ApiImplicitParam(name="videoId", value="视频Id",paramType = "form"),
+		@ApiImplicitParam(name="publisherId", value="发布者Id",paramType = "form")
+	})
+	@PostMapping("/userLikevideo")
+	public JSONResult userLikevideo(String userId,String videoId,String publisherId) {
 		
+		videoService.userLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
-
 }

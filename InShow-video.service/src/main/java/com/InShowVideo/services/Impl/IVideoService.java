@@ -2,13 +2,17 @@ package com.InShowVideo.services.Impl;
  
 import java.util.List;
 
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.InShowVideo.mapper.UsersLikeVideosMapper;
+import com.InShowVideo.mapper.UsersMapper;
 import com.InShowVideo.mapper.VideosMapper;
 import com.InShowVideo.mapper.VideosMapperCustom;
+import com.InShowVideo.pojo.UsersLikeVideos;
 import com.InShowVideo.pojo.Videos;
 import com.InShowVideo.pojo.vo.VideosVO;
 import com.InShowVideo.services.videoService;
@@ -19,8 +23,15 @@ import com.github.pagehelper.PageInfo;
 public class IVideoService implements videoService {
 	@Autowired
 	private VideosMapper videoMapper;
-	
+	@Autowired
 	private VideosMapperCustom videosMapperCustom;
+	@Autowired
+	private UsersLikeVideosMapper usersLikevideosMapper;
+	@Autowired
+	private UsersMapper usersMapper;
+	
+	@Autowired
+	private Sid sid;
 	
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
@@ -60,5 +71,22 @@ public class IVideoService implements videoService {
 		
 		return pagedResult;
 	}
+
+	@Override
+	public void userLikevideos(String userId, String videoId, String publisherId) {
+		String ulvId=sid.nextShort();
+		
+		UsersLikeVideos ulv = new UsersLikeVideos();
+		ulv.setId(ulvId);
+		ulv.setUserId(userId);
+		ulv.setVideoId(videoId);
+		usersLikevideosMapper.insert(ulv);
+		//增加视频的收藏数
+		videosMapperCustom.addlikecountsByvideo(videoId);
+		//增加用户的收藏视频数
+		usersMapper.addreceiveLikeCounts(publisherId);
+	}
+
+
 
 }

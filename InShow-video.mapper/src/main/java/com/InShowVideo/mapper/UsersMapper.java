@@ -15,4 +15,8 @@ public interface UsersMapper extends MyMapper<Users> {
 	 */
 	
 	public void addFollowersCounts(String userId);
+	/**
+	 * 
+	 */
+	public void addreceiveLikeCounts(String publisherId);
 }
