@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.InShowVideo.mapper.UsersClickVideosMapper;
 import com.InShowVideo.mapper.UsersLikeVideosMapper;
 import com.InShowVideo.mapper.UsersMapper;
 import com.InShowVideo.mapper.VideosMapper;
 import com.InShowVideo.mapper.VideosMapperCustom;
+import com.InShowVideo.pojo.UsersClickVideos;
 import com.InShowVideo.pojo.UsersLikeVideos;
 import com.InShowVideo.pojo.Videos;
 import com.InShowVideo.pojo.vo.VideosVO;
@@ -27,6 +29,8 @@ public class IVideoService implements videoService {
 	private VideosMapperCustom videosMapperCustom;
 	@Autowired
 	private UsersLikeVideosMapper usersLikevideosMapper;
+	@Autowired
+	private UsersClickVideosMapper usersClickvideosMapper;
 	@Autowired
 	private UsersMapper usersMapper;
 	
@@ -85,6 +89,21 @@ public class IVideoService implements videoService {
 		videosMapperCustom.addlikecountsByvideo(videoId);
 		//增加用户的收藏视频数
 		usersMapper.addreceiveLikeCounts(publisherId);
+	}
+
+	@Override
+	public void userClickvideos(String userId, String videoId) {
+		
+		String ucvId =sid.nextShort();
+		UsersClickVideos ucv =new UsersClickVideos();
+		ucv.setId(ucvId);
+		ucv.setUserId(userId);
+		ucv.setVideoId(videoId);
+		usersClickvideosMapper.insert(ucv);
+		
+		//增加视频的点赞数
+		
+		videosMapperCustom.addClickcountsByvideo(videoId);
 	}
 
 

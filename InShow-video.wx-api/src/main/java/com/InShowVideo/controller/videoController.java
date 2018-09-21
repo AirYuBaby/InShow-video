@@ -70,4 +70,14 @@ public class videoController extends BasicController{
 		videoService.userLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
+	@ApiOperation(value = "用户点赞视频的接口")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="userId", value="用户Id",paramType = "form"),
+		@ApiImplicitParam(name="videoId", value="视频Id",paramType = "form"),
+	})
+	@PostMapping("/userClickvideo")
+	public JSONResult userClickvideo(String userId,String videoId) {
+		videoService.userClickvideos(userId, videoId);
+		return JSONResult.ok();
+	}
 }
