@@ -32,4 +32,22 @@ public class bgmController extends BasicController {
 			return JSONResult.errorMsg("页码错误，你的小可爱呢不到视频啦");
 		}
 	}
+	
+	@ApiOperation(value="按热度获取bgm列表的接口",notes="按热度获取bgm列表的接口")
+	@ApiImplicitParam(name="page",value="动态加载的数据页数（从0开始）",required=true,dataType="int",paramType="query")
+	@GetMapping("/getAllByHart")
+	public JSONResult getBgmByHart(int page) {
+		//测试choose接口
+		//bservice.bgmBeChoose("1001");
+		
+		if(page>=0) {
+			List<Bgm> list = bservice.getBgmByChoose(page);
+			for(Bgm bgm : list) {
+				System.out.println();
+			}
+			return JSONResult.ok(list);
+		}else {
+			return JSONResult.errorMsg("页码错误，你的小可爱呢不到视频啦");
+		}
+	}
 }

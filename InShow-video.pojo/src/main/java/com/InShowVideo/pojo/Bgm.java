@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "`bgm`")
 public class Bgm implements Serializable {
+	@Id
     private String id;
 
     private String author;

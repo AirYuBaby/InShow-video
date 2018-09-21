@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.InShowVideo.mapper.BgmMapper;
 import com.InShowVideo.pojo.Bgm;
+import com.InShowVideo.pojo.Users;
 import com.InShowVideo.services.bgmService;
 import com.github.pagehelper.PageHelper;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 @Service
 public class IBgmService implements bgmService {
 	@Autowired
@@ -19,5 +23,27 @@ public class IBgmService implements bgmService {
 		List<Bgm> bgms = bmapper.selectAll();
 		return bgms;
 	}
+	@Override
+	public List<Bgm> getBgmByChoose(int page) {
+		PageHelper.startPage(page, 10);
+		List<Bgm> bgms = bmapper.queryByHart();
+		return bgms;
+	}
+	@Override
+	public boolean bgmBeChoose(String bgmid) {
+		Example bgmExample = new Example(Users.class);
+		Criteria criteria = bgmExample.createCriteria();
+		criteria.andEqualTo("id",bgmid);
+		
+		Bgm bgm = bmapper.selectOneByExample(bgmExample);
+		if(bgm!=null) {
+			bgm.setChooseCount(bgm.getChooseCount()+1);
+			bmapper.updateByPrimaryKey(bgm);
+			return true;
+		}
+		
+		return false;
+	}
+	
 
 }

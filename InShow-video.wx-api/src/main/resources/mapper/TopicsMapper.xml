@@ -11,4 +11,7 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <select id="queryAllByHart" resultMap="BaseResultMap">
+        SELECT * FROM topics ORDER BY participation_counts DESC
+  </select>
 </mapper>
