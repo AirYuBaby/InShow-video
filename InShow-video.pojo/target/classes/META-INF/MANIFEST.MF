@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: InShow-video.pojo
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Administrator
+Built-By: ￥ﾮﾇ￥ﾠﾡ￥ﾠﾡ
 Implementation-Vendor-Id: com.InShow-video
-Build-Jdk: 1.8.0_131
+Build-Jdk: 1.8.0_121
 Implementation-URL: http://projects.spring.io/spring-boot/InShow-video
  /InShow-video.pojo/
 Created-By: Maven Integration for Eclipse

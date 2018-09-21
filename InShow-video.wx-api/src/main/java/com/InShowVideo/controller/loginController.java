@@ -36,39 +36,15 @@ public class loginController<K> extends BasicController{
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="js_code", value="唯一登陆码", required=true, 
 				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="encryptedData", value="加密数据字符串", required=false, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="iv", value="初始加密向量", required=true, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="nickName", value="昵称", required=true, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="avatarUrl", value="头像地址", required=true, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="gender", value="性别", required=true, 
-				dataType="int", paramType="query"),
-		@ApiImplicitParam(name="city", value="城市", required=true, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="province", value="省份", required=true, 
-				dataType="String", paramType="query"),
-		@ApiImplicitParam(name="country", value="国家", required=true, 
-				dataType="String", paramType="query")
 	})
 	@PostMapping("/login")
 	public JSONResult login(
-			String js_code,
-			String encryptedData,
-			String iv,
-			String nickName,
-			String avatarUrl,
-			int gender,
-			String city,
-			String province,
-			String country) {
+			String js_code) {
 		if(StringUtils.isNotBlank(js_code)) {
 			//appid跟appsecret都是注册小程序后才存在的常量
-			System.out.println("----------"+js_code+"-------"+nickName);
-			String appID = "";
-			String appSecret = "";
+			System.out.println("----------"+js_code);
+			String appID = "wxa35bbd6556297ebd";
+			String appSecret = "76d8c34dde69c14683bfc7519636900a";
 			//测试用假数据
 			String openid = "1111";
 			try {
@@ -80,33 +56,34 @@ public class loginController<K> extends BasicController{
 				
 				openid = data.getString("openId");
 				String key = data.getString("session_key");
+				
+				Users user = new Users();
+				user.setOpenid(openid);
+				user.setUsername(data.getString("Username"));
+				user.setNickname(data.getString("Nickname")); 
+				user.setAvatarurl(data.getString("Avatarurl")); 
+//				user.setGender(Integer.valueOf(gender)); 
+				user.setGender(Integer.valueOf(data.getString("Gender")));
+				user.setCity(data.getString("City"));
+				user.setProvince(data.getString("Province")); 
+				user.setCountry(data.getString("Country")); 
+				
+				
+				Users u2 = service.updataUser(user);
+				if(u2!=null) {
+					String token = setUserRedisSessionToken(u2);
+					Map map = new HashMap<>();
+					System.out.println("token-----------"+redis.get(USER_REDIS_SESSION + ":" + u2.getId()));
+					map.put("userid", u2.getId());
+					map.put("token", token);
+					
+					JSONResult.ok(map);
+				}else {
+					JSONResult.errorMsg("未知错误，登陆信息无法校验");
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			Users user = new Users();
-			user.setOpenid(openid);
-			user.setUsername(nickName);
-			user.setNickname(nickName); 
-			user.setAvatarurl(avatarUrl); 
-//			user.setGender(Integer.valueOf(gender)); 
-			user.setGender(gender);
-			user.setCity(city);
-			user.setProvince(province); 
-			user.setCountry(country); 
-			
-			Users u2 = service.updataUser(user);
-			if(u2!=null) {
-				String token = setUserRedisSessionToken(u2);
-				Map map = new HashMap<>();
-				System.out.println("token-----------"+redis.get(USER_REDIS_SESSION + ":" + u2.getId()));
-				map.put("userid", u2.getId());
-				map.put("token", token);
-				
-				JSONResult.ok(map);
-			}else {
-				JSONResult.errorMsg("未知错误，登陆信息无法校验");
 			}
 		}
 		
@@ -118,5 +95,10 @@ public class loginController<K> extends BasicController{
 		redis.set(USER_REDIS_SESSION + ":" + userModel.getId(), uniqueToken, 1000 * 60 * 30);
 		return uniqueToken;
 	}
-
+	@PostMapping("/login2")
+	public JSONResult login2(
+			String js_code) {
+		System.out.println("------------"+js_code);
+		return JSONResult.ok(js_code);
+	}
 }
