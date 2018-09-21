@@ -2,7 +2,7 @@ package com.InShowVideo.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
- 
+
 @Table(name = "`bgm`")
 public class Bgm implements Serializable {
     private String id;
@@ -12,6 +12,8 @@ public class Bgm implements Serializable {
     private String name;
 
     private String path;
+
+    private Integer chooseCount;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,5 +47,13 @@ public class Bgm implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Integer getChooseCount() {
+        return chooseCount;
+    }
+
+    public void setChooseCount(Integer chooseCount) {
+        this.chooseCount = chooseCount;
     }
 }
