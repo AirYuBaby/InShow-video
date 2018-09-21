@@ -24,7 +24,10 @@ public interface videoService {
 	 * @param videoId
 	 * @param publisherId
 	 */
+
 	public void userLikevideos(String userId,String videoId,String publisherId);
+	
+	public PagedResult queryMyFollowerVideo(String userId,Integer page, Integer pageSize);
 	/**
 	 * 用户点赞视频
 	 * @param userId

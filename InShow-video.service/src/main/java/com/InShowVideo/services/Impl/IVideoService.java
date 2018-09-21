@@ -106,6 +106,23 @@ public class IVideoService implements videoService {
 		videosMapperCustom.addClickcountsByvideo(videoId);
 	}
 
+	@Override
+	public PagedResult queryMyFollowerVideo(String userId, Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<VideosVO> list = videosMapperCustom.queryMyFollowerVideo(userId);
+				
+		PageInfo<VideosVO> pageList = new PageInfo<>(list);
+		
+		PagedResult pagedResult = new PagedResult();
+		pagedResult.setTotal(pageList.getPages());
+		pagedResult.setRows(list);
+		pagedResult.setPage(page);
+		pagedResult.setRecords(pageList.getTotal());
+		
+		return pagedResult;
+		
+	}
+
 
 
 }

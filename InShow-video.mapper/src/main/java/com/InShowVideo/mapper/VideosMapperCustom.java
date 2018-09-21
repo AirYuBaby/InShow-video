@@ -15,6 +15,12 @@ public interface VideosMapperCustom extends MyMapper<Videos> {
 	 */
 	public List<VideosVO> queryMyLikeVideos(@Param("userId") String userId);
 	/**
+	 * 查询我关注的人的视频列表
+	 * @param userId
+	 * @return
+	 */
+	public List<VideosVO> queryMyFollowerVideo(@Param("userId")String userId);
+	/**
 	 * @Description: 增加视频收藏数
 	 * @param videoId
 	 */

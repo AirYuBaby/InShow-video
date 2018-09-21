@@ -26,6 +26,15 @@
 			and v.status = 1
 			order by v.create_time desc
   </select>
+  <select id="queryMyFollowerVideo" resultMap="BaseResultMap" parameterType="String">
+  select v.*,u.avatarUrl as avatarUrl,u.nickname as nickname from videos v
+  left join users u on v.user_id = u.id
+  where 
+			v.user_id in (select uf.user_id from users_fans uf where uf.fan_id = #{userId})
+			and v.status = 1
+			order by v.create_time desc
+  </select>
+  
   <update id="addlikecountsByvideo"  parameterType="String">
   	update videos set like_counts=like_counts+1 where id=#{videoId}
   </update>

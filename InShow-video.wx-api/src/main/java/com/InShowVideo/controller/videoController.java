@@ -58,7 +58,29 @@ public class videoController extends BasicController{
 		PagedResult videoList = videoService.qureyMyLikeVideo(userId, page, pageSize);
 		return JSONResult.ok(videoList);
 	}
-	@ApiOperation(value = "用户收藏视频的接口")
+	@ApiOperation(value = "获取我收藏的视频的接口")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="userId", value="用户Id",paramType = "form"),
+		@ApiImplicitParam(name="page", value="页码（从0开始）",paramType = "form"),
+		@ApiImplicitParam(name="pageSize", value="每页展示的视频数量",paramType = "form")
+	})
+	@PostMapping("/showmyfollers")
+	public JSONResult showmyfollers(String userId,Integer page,Integer pageSize) {
+		if(StringUtils.isBlank(userId)) {
+			return JSONResult.errorMsg("");
+		}
+		if(page==null) {
+			page=1;
+		}
+		if(pageSize==null) {
+			pageSize=4;
+		}
+		PagedResult videoList=videoService.queryMyFollowerVideo(userId, page, pageSize);
+		return JSONResult.ok();
+	}
+	
+	
+	@ApiOperation(value = "关注的用户发布的视频的接口")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="userId", value="用户Id",paramType = "form"),
 		@ApiImplicitParam(name="videoId", value="视频Id",paramType = "form"),
