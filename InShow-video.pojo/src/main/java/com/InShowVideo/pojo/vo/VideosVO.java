@@ -28,6 +28,8 @@ public class VideosVO {
 
     private Long clickCounts;
     
+    private String topicId;
+    
     private String avatarUrl;
     private String nickname;
 

@@ -22,6 +22,11 @@ public class videoController extends BasicController{
 	@Autowired
 	private videoService videoService;
 	
+	
+	public JSONResult uploadVideos() {
+		
+		return JSONResult.ok();
+	}
 	@ApiOperation(value = "获取视频列表的接口")
 	@ApiImplicitParam(name="page", value="页码（从0开始）",paramType = "query")
 	@PostMapping("/getByPage")

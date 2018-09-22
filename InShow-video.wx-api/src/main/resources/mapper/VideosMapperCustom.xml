@@ -17,6 +17,7 @@
     <result column="click_counts" jdbcType="BIGINT" property="clickCounts" />
     <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl"/>
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
   </resultMap>
   <select id="queryMyLikeVideos" resultMap ="BaseResultMap" parameterType="String">
   select v.*,u.avatarUrl as avatarUrl,u.nickname as nickname from videos v 

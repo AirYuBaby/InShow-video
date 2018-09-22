@@ -31,6 +31,8 @@ public class Videos implements Serializable {
     private Date createTime;
 
     private Long clickCounts;
+    
+    private String topicId;
 
     private static final long serialVersionUID = 1L;
 
