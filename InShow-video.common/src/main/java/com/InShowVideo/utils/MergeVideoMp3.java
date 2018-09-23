@@ -15,13 +15,16 @@ public class MergeVideoMp3 {
 		this.ffmpegEXE = ffmpegEXE;
 	}
 	
-	public void convertor(String videoInputPath, String mp3InputPath,
+	public void convertor(String videoInputPath, String mp3InputPath,int position,
 			double seconds, String videoOutputPath) throws Exception {
 		List<String> command = new ArrayList<>();
 		command.add(ffmpegEXE);
 		
 		command.add("-i");
 		command.add(videoInputPath);
+		
+		command.add("-ss");
+		command.add(position+"");
 		
 		command.add("-i");
 		command.add(mp3InputPath);

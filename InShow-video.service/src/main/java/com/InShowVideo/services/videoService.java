@@ -1,5 +1,6 @@
 package com.InShowVideo.services;
 
+import com.InShowVideo.pojo.Videos;
 import com.InShowVideo.utils.PagedResult;
  
 public interface videoService {
@@ -35,4 +36,6 @@ public interface videoService {
 	 */
 	
 	public void userClickvideos(String userId,String videoId);
+	
+	public String saveVideo(Videos video);
 }

@@ -14,4 +14,7 @@
   <select id="queryAllByHart" resultMap="BaseResultMap">
         SELECT * FROM topics ORDER BY participation_counts DESC
   </select>
+  <update id="updateparticipationCounts" parameterType="String">
+  	update topics set participation_counts=participation_counts+1 where id=#{topicId}
+  </update>
 </mapper>

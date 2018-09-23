@@ -6,6 +6,7 @@ import javax.persistence.*;
  
 @Table(name = "`videos`")
 public class Videos implements Serializable {
+	@Id
     private String id;
 
     private String userId;
@@ -141,4 +142,20 @@ public class Videos implements Serializable {
     public void setClickCounts(Long clickCounts) {
         this.clickCounts = clickCounts;
     }
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public Integer getBgmPosition() {
+		return bgmPosition;
+	}
+
+	public void setBgmPosition(Integer bgmPosition) {
+		this.bgmPosition = bgmPosition;
+	}
 }

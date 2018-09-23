@@ -32,7 +32,7 @@ public class IBgmService implements bgmService {
 	}
 	@Override
 	public Bgm bgmBeChoose(String bgmid) {
-		Example bgmExample = new Example(Users.class);
+		Example bgmExample = new Example(Bgm.class);
 		Criteria criteria = bgmExample.createCriteria();
 		criteria.andEqualTo("id",bgmid);
 		

@@ -7,4 +7,5 @@ import com.InShowVideo.utils.MyMapper;
 
 public interface TopicsMapper extends MyMapper<Topics> {
 	public List<Topics> queryAllByHart();
+	public void updateparticipationCounts(String topicId);
  }

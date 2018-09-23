@@ -6,6 +6,7 @@ import javax.persistence.*;
  
 @Table(name = "`topics`")
 public class Topics implements Serializable {
+	@Id
     private String id;
 
     private String userId;

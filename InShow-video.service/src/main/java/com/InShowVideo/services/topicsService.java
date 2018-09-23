@@ -18,5 +18,10 @@ public interface topicsService {
 	 * @return
 	 */
 	public List<topicsVO> getAllTopicByHart(int page);
+	/**
+	 * 用户发布视频参与某话题
+	 * @param topicId
+	 */
+	public void  addVideotopic(String topicId);
 
 }

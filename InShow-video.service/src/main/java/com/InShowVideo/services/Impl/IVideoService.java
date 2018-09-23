@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.InShowVideo.enums.VideoStatusEnum;
 import com.InShowVideo.mapper.UsersClickVideosMapper;
 import com.InShowVideo.mapper.UsersLikeVideosMapper;
 import com.InShowVideo.mapper.UsersMapper;
@@ -118,9 +119,15 @@ public class IVideoService implements videoService {
 		pagedResult.setRows(list);
 		pagedResult.setPage(page);
 		pagedResult.setRecords(pageList.getTotal());
-		
-		return pagedResult;
-		
+		return pagedResult;		
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public String saveVideo(Videos video) {
+		String vid=sid.nextShort();
+		video.setId(vid);
+		videoMapper.insertSelective(video);
+		return vid;
 	}
 
 

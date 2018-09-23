@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.InShowVideo.mapper.TopicsMapper;
 import com.InShowVideo.mapper.UsersMapper;
+import com.InShowVideo.pojo.Bgm;
 import com.InShowVideo.pojo.Topics;
+import com.InShowVideo.pojo.Users;
 import com.InShowVideo.pojo.vo.topicsVO;
 import com.InShowVideo.services.topicsService;
 import com.github.pagehelper.PageHelper;
@@ -68,4 +70,9 @@ public class ITopicsService implements topicsService {
 		return voList;
 	}
 
+	@Override
+	public void addVideotopic(String topicId) {
+		System.out.println("+++++++++++++++++****************"+topicId);
+		tMapper.updateparticipationCounts(topicId);
+	}
 }

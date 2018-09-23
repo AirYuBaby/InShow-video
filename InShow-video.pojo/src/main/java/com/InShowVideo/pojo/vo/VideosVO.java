@@ -157,4 +157,20 @@ public class VideosVO {
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
 	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public Integer getBgmPosition() {
+		return bgmPosition;
+	}
+
+	public void setBgmPosition(Integer bgmPosition) {
+		this.bgmPosition = bgmPosition;
+	}
 }
