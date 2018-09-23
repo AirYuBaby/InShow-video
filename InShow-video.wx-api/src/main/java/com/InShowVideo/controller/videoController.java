@@ -1,11 +1,21 @@
 package com.InShowVideo.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.InShowVideo.pojo.Bgm;
+import com.InShowVideo.services.bgmService;
 import com.InShowVideo.services.videoService;
 import com.InShowVideo.utils.JSONResult;
 import com.InShowVideo.utils.PagedResult;
@@ -22,9 +32,62 @@ public class videoController extends BasicController{
 	@Autowired
 	private videoService videoService;
 	
-	
-	public JSONResult uploadVideos() {
+	private bgmService bgmService;
+	public JSONResult uploadVideos(String userId,String audioId,String topicId,String videoSecond,String videoWidth,String videoHeight,String desc,int status,MultipartFile file) throws Exception{
 		
+		if(StringUtils.isBlank(userId)) {
+			return JSONResult.errorMsg("用户Id不能为空");
+		}
+		String videoPathDB="/"+userId+"/video";
+		String coverPathDB="/"+userId+"/video";
+		String videoFinalPath="";
+		FileOutputStream fileOutputStream=null;
+		InputStream inputStream=null;
+		try {
+		if(file!=null) {
+			//获取文件原名
+			String fileName=file.getOriginalFilename();
+			
+			String arrrayFileName[]=fileName.split("\\.");
+			
+			String prefixName="";
+			for(int i=0;i<arrrayFileName.length;i++)
+				prefixName+=arrrayFileName[i];
+			
+			if(StringUtils.isNotBlank(prefixName)) {
+				videoFinalPath=FILESPACE+videoPathDB+"/"+fileName;
+				videoPathDB+=("/"+fileName);
+				coverPathDB+=("/"+prefixName+".jpg");
+				
+				File Ofile = new File(fileName);
+				
+				if(Ofile.getParentFile()!=null||Ofile.getParentFile().isDirectory()) {
+					Ofile.getParentFile().mkdirs();
+				}
+				
+					fileOutputStream = new FileOutputStream(Ofile);
+					inputStream =file.getInputStream();
+					IOUtils.copy(inputStream, fileOutputStream);
+			}
+		}else {
+			return JSONResult.errorMsg("上传出错");
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JSONResult.errorMsg("上传出错");
+		}finally {
+			if(fileOutputStream!=null) {
+				fileOutputStream.flush();
+				fileOutputStream.close();
+			}
+		}
+		
+		if(StringUtils.isNotBlank(audioId)) {
+			Bgm bmg = bgmService.bgmBeChoose(audioId);
+			String audioInputPath =FILESPACE+bmg.getPath();
+			
+			
+		}
 		return JSONResult.ok();
 	}
 	@ApiOperation(value = "获取视频列表的接口")

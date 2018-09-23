@@ -16,6 +16,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="click_counts" jdbcType="BIGINT" property="clickCounts" />
     <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
+    <result column="bgm_position" jdbcType="INTEGER" property="bgmPosition" />
   </resultMap>
 
 </mapper>

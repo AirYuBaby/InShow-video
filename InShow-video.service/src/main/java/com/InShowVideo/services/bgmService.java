@@ -18,9 +18,11 @@ public interface bgmService {
 	 */
 	public List<Bgm> getBgmByChoose(int page);
 	/**
-	 * bgm被选择时使用，choose_count+1
+	 * bgm被选择，获取bgm信息
 	 * @param bgmid
 	 * @return
 	 */
-	public boolean bgmBeChoose(String bgmid);
+	public Bgm bgmBeChoose(String bgmid);
+	
+	
 }

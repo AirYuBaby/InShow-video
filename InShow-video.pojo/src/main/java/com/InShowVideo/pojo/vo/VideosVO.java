@@ -30,6 +30,8 @@ public class VideosVO {
     
     private String topicId;
     
+    private Integer bgmPosition;
+    
     private String avatarUrl;
     private String nickname;
 

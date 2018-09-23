@@ -33,6 +33,8 @@ public class Videos implements Serializable {
     private Long clickCounts;
     
     private String topicId;
+    
+    private Integer bgmPosition;
 
     private static final long serialVersionUID = 1L;
 

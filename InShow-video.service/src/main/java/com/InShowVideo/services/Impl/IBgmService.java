@@ -9,6 +9,7 @@ import com.InShowVideo.mapper.BgmMapper;
 import com.InShowVideo.pojo.Bgm;
 import com.InShowVideo.pojo.Users;
 import com.InShowVideo.services.bgmService;
+import com.InShowVideo.utils.JSONResult;
 import com.github.pagehelper.PageHelper;
 
 import tk.mybatis.mapper.entity.Example;
@@ -30,7 +31,7 @@ public class IBgmService implements bgmService {
 		return bgms;
 	}
 	@Override
-	public boolean bgmBeChoose(String bgmid) {
+	public Bgm bgmBeChoose(String bgmid) {
 		Example bgmExample = new Example(Users.class);
 		Criteria criteria = bgmExample.createCriteria();
 		criteria.andEqualTo("id",bgmid);
@@ -39,10 +40,9 @@ public class IBgmService implements bgmService {
 		if(bgm!=null) {
 			bgm.setChooseCount(bgm.getChooseCount()+1);
 			bmapper.updateByPrimaryKey(bgm);
-			return true;
+			return bgm;
 		}
-		
-		return false;
+		return null;
 	}
 	
 
