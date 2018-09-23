@@ -114,6 +114,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+		<!-- solr工具包 -->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>7.4.0</version>
+        </dependency>
+		
 
 		<!-- swagger2 配置 -->
 		<dependency>
