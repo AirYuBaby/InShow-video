@@ -235,4 +235,14 @@ public class videoController extends BasicController {
 		videoService.userunLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
+	
+	@ApiOperation(value = "用户取消点赞的视频的接口")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
+			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"),
+			@ApiImplicitParam(name = "publisherId", value = "发布者Id", paramType = "form") })
+	@PostMapping("/userUnclickVideo")
+	public JSONResult userUnclickVideo(String userId,String videoId,String publisherId) {
+		videoService.userUnclickVideos(userId, videoId, publisherId);
+		return JSONResult.ok();
+	}
 }

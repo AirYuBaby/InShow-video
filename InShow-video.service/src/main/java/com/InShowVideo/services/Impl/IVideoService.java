@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.InShowVideo.enums.VideoStatusEnum;
 import com.InShowVideo.mapper.UsersClickVideosMapper;
 import com.InShowVideo.mapper.UsersLikeVideosMapper;
 import com.InShowVideo.mapper.UsersMapper;
@@ -148,6 +147,20 @@ public class IVideoService implements videoService {
 		usersMapper.delectreceiveLikeCounts(publisherId);
 	}
 
+	@Override
+	public void userUnclickVideos(String userId, String videoId, String publisherId) {
+		Example example = new Example(UsersClickVideos.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("videoId", videoId);
+		
+		usersClickvideosMapper.deleteByExample(example);
+		//减少视频的点赞数
+		videosMapperCustom.delectClickcountsByvideo(videoId);
+		
+	}
+	
 
 
 }
