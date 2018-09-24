@@ -19,11 +19,11 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
-
-@SuppressWarnings("deprecation")
+import org.springframework.stereotype.Service;
+@Service
 public class ISolrService implements solrService {
 	//solr服务器地址，要带上对用的core  即：/solr后的字段
-	String solrUrl = "http://192.168.1.10:8888/solr/inshow_video2";
+	String solrUrl = "http://192.168.1.4:8888/solr/inshow_video2";
 	HttpSolrClient solrClient = null;
 
 	public ISolrService() {
@@ -78,6 +78,8 @@ public class ISolrService implements solrService {
 	 * @throws IOException
 	 */
 	public List<Bgm> selectBgmByKey(String key, int page) throws SolrServerException, IOException {
+		if(key==null)
+			key = "";
 		List<Bgm> blist = new ArrayList<Bgm>();
 		SolrDocumentList docs = getDocs("b_name:*" + key + "*", page, 10);
 		for (SolrDocument doc : docs) {
@@ -105,6 +107,8 @@ public class ISolrService implements solrService {
 	 */
 	public List<Users> selectUserFansByKey(String userid, String key, int page)
 			throws SolrServerException, IOException {
+		if(key==null)
+			key = "";
 		List<Users> ulist = new ArrayList<Users>();
 		SolrDocumentList udocs = getDocs("uf_user_id:" + userid, 0, 0);
 		ArrayList<String> list = new ArrayList<String>();
@@ -203,6 +207,8 @@ public class ISolrService implements solrService {
 	 */
 	public List<Users> selectUserFollorByKey(String userid, String key, int page)
 			throws SolrServerException, IOException {
+		if(key==null)
+			key = "";
 		List<Users> ulist = new ArrayList<Users>();
 		SolrDocumentList udocs = getDocs("uf_fan_id:" + userid, 0, 0);
 		ArrayList<String> list = new ArrayList<String>();
