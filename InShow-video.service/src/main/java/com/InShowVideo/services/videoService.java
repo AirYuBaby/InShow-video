@@ -47,8 +47,18 @@ public interface videoService {
 	 * @param userId
 	 * @param videoId
 	 */
-	
 	public void userClickvideos(String userId,String videoId);
-	
+	/**
+	 * 保存视频
+	 * @param video
+	 * @return
+	 */
 	public String saveVideo(Videos video);
+	/**
+	 * 取消点赞
+	 * @param userId
+	 * @param videoId
+	 * @param publisherId
+	 */
+	public void userUnclickVideos(String userId, String videoId, String publisherId);
 }

@@ -79,4 +79,18 @@ public class userController {
 		userservice.fansPickusers(userId, fansId);
 		return JSONResult.ok("关注成功");
 	}
+	
+	@ApiOperation(value="粉丝取消关注的接口",notes="粉丝取消关注用户的接口")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="userId",value="用户ID（就是我的id）",required=true,dataType="String",paramType="form"),
+			@ApiImplicitParam(name="followId",value="被关注人id（就是对方的id）",required=true,dataType="String",paramType="form")
+	})
+	@PostMapping("/fanspick")
+	public JSONResult fansUnpick(String userId,String followId) {
+		if(StringUtils.isBlank(userId)||StringUtils.isBlank(followId)) {
+			return JSONResult.errorMsg("数据出错");
+		}
+//		userservice.fansUnpickUsers(userId, followId);
+		return JSONResult.ok("关注成功");
+	}
 }

@@ -48,4 +48,7 @@
   <update id="delectlikecountsByvideo"  parameterType="String">
   	update videos set like_counts=like_counts-1 where id=#{videoId}
   </update>
+  <update id="delectClickcountsByvideo"  parameterType="String">
+    update videos set click_counts=click_counts-1 where id=#{videoId}
+  </update>
 </mapper>
