@@ -43,6 +43,5 @@ public class topicsController extends BasicController {
 		}
 		return JSONResult.errorMsg("未知错误，你的小可爱迷路啦");
 	}
-	
 
 }
