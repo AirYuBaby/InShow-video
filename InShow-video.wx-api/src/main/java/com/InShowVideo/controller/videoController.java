@@ -188,7 +188,7 @@ public class videoController extends BasicController {
 		return JSONResult.ok(videoList);
 	}
 
-	@ApiOperation(value = "获取我收藏的视频的接口")
+	@ApiOperation(value = "获取我关注的用户的视频的接口")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
 			@ApiImplicitParam(name = "page", value = "页码（从0开始）", paramType = "form"),
 			@ApiImplicitParam(name = "pageSize", value = "每页展示的视频数量", paramType = "form") })
@@ -207,7 +207,7 @@ public class videoController extends BasicController {
 		return JSONResult.ok();
 	}
 
-	@ApiOperation(value = "关注的用户发布的视频的接口")
+	@ApiOperation(value = "用户收藏的视频的接口")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
 			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"),
 			@ApiImplicitParam(name = "publisherId", value = "发布者Id", paramType = "form") })
@@ -224,6 +224,15 @@ public class videoController extends BasicController {
 	@PostMapping("/userClickvideo")
 	public JSONResult userClickvideo(String userId, String videoId) {
 		videoService.userClickvideos(userId, videoId);
+		return JSONResult.ok();
+	}
+	@ApiOperation(value = "用户取消收藏的视频的接口")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
+			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"),
+			@ApiImplicitParam(name = "publisherId", value = "发布者Id", paramType = "form") })
+	@PostMapping("/userunLikeVideo")
+	public JSONResult userunLikeVideo(String userId,String videoId,String publisherId) {
+		videoService.userunLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
 }

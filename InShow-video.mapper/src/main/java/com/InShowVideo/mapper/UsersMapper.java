@@ -18,7 +18,12 @@ public interface UsersMapper extends MyMapper<Users> {
 	
 	public void addFollowersCounts(@Param("userId")String userId);
 	/**
-	 * 
+	 * 用户增加被收藏数
 	 */
 	public void addreceiveLikeCounts(@Param("publisherId")String publisherId);
+	/**
+	 * 用户减少被收藏数
+	 * @param publisherId
+	 */
+	public void delectreceiveLikeCounts(@Param("publisherId")String publisherId);
 }

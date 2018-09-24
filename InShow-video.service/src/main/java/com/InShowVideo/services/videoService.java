@@ -27,7 +27,20 @@ public interface videoService {
 	 */
 
 	public void userLikevideos(String userId,String videoId,String publisherId);
-	
+	/**
+	 * 用户取消收藏视频
+	 * @param userId
+	 * @param videoId
+	 * @param publisherId
+	 */
+	public void userunLikevideos(String userId,String videoId,String publisherId);
+	/**
+	 * 获取我关注的用户的视频列表
+	 * @param userId
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
 	public PagedResult queryMyFollowerVideo(String userId,Integer page, Integer pageSize);
 	/**
 	 * 用户点赞视频

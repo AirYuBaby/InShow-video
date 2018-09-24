@@ -22,6 +22,9 @@ import com.InShowVideo.services.videoService;
 import com.InShowVideo.utils.PagedResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 @Service
 public class IVideoService implements videoService {
 	@Autowired
@@ -128,6 +131,21 @@ public class IVideoService implements videoService {
 		video.setId(vid);
 		videoMapper.insertSelective(video);
 		return vid;
+	}
+
+	@Override
+	public void userunLikevideos(String userId, String videoId, String publisherId) {
+		Example example = new Example(UsersLikeVideos.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("videoId", videoId);
+		
+		usersLikevideosMapper.deleteByExample(example);
+		//减少视频的收藏数
+		videosMapperCustom.delectlikecountsByvideo(videoId);
+		//减少发布者的被收藏数
+		usersMapper.delectreceiveLikeCounts(publisherId);
 	}
 
 

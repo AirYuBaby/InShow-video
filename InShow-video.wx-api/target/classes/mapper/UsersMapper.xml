@@ -25,5 +25,8 @@
    <update id="addreceiveLikeCounts" parameterType="String">
   	update users set receive_like_counts=receive_like_counts+1 where id=#{userId}
   </update>
+  <update id="delectreceiveLikeCounts" parameterType="String">
+  	update users set receive_like_counts=receive_like_counts-1 where id=#{userId}
+  </update>
   
 </mapper>
