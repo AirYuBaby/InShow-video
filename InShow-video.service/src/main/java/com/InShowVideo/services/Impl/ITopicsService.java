@@ -3,8 +3,11 @@ package com.InShowVideo.services.Impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.InShowVideo.mapper.TopicsMapper;
 import com.InShowVideo.mapper.UsersMapper;
@@ -23,6 +26,8 @@ public class ITopicsService implements topicsService {
 	private TopicsMapper tMapper;
 	@Autowired
 	private UsersMapper uMapper;
+	@Autowired
+	private Sid sid;
 	@Override
 	public List<topicsVO> getAllTopic(int page) {
 		PageHelper.startPage(page, 10);
@@ -74,5 +79,14 @@ public class ITopicsService implements topicsService {
 	public void addVideotopic(String topicId) {
 		System.out.println("+++++++++++++++++****************"+topicId);
 		tMapper.updateparticipationCounts(topicId);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public String saveTopic(Topics topic) {
+		String tid=sid.nextShort();
+		topic.setId(tid);
+		tMapper.insertSelective(topic);
+		return tid;
 	}
 }

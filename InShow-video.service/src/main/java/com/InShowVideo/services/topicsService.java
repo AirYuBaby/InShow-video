@@ -23,5 +23,7 @@ public interface topicsService {
 	 * @param topicId
 	 */
 	public void  addVideotopic(String topicId);
+	
+	public String saveTopic(Topics topic);
 
 }
