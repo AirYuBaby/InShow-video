@@ -11,6 +11,7 @@ import com.InShowVideo.services.reportService;
 import com.InShowVideo.utils.JSONResult;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
