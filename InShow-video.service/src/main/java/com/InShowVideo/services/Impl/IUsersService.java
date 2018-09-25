@@ -90,19 +90,19 @@ public class IUsersService implements usersService {
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public void fansPickusers(String userId, String fansId)  {
+	public void fansPickusers(String followId,String userId)  {
         String relId = sid.nextShort();
 		
 		UsersFans userFan = new UsersFans();
 		userFan.setId(relId);
-		userFan.setUserId(userId);
-		userFan.setFanId(fansId);
+		userFan.setUserId(followId);
+		userFan.setFanId(userId);
 		
 		usersFansMapper.insert(userFan);
 		
 		//做个标记，不知道有没有写反了
-		userMapper.addFansCounts(userId);
-		userMapper.addFollowersCounts(fansId);
+		userMapper.addFansCounts(followId);
+		userMapper.addFollowersCounts(userId);
 		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -126,6 +126,20 @@ public class IUsersService implements usersService {
 			}
 		}
 		return null;
+	}
+	@Override
+	public void fansUnpickusers(String followId,String userId) {
+		// TODO Auto-generated method stub
+		Example example =new Example(UsersFans.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo(followId);
+		criteria.andEqualTo(userId);
+		
+		usersFansMapper.deleteByExample(example);
+		
+		userMapper.delectFansCounts(followId);
+		userMapper.delectFollowersCounts(userId);
 	}
 	
 }

@@ -24,7 +24,11 @@ public interface usersService {
 	 * @param userId
 	 * @param fansId
 	 */
-	public void fansPickusers(String userId,String fansId);
+	public void fansPickusers(String followId,String userId);
+	/*
+	 * 粉丝取消关注
+	 */
+	public void fansUnpickusers(String followId,String userId);
 	/**
 	 * 登陆.....老用户更新.....新用户写入
 	 * @param openid

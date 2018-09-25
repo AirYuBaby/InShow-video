@@ -12,11 +12,21 @@ public interface UsersMapper extends MyMapper<Users> {
 	 */
 	public void addFansCounts(@Param("userId")String userId);
 	/**
+	 * 用户减少粉丝数
+	 * @param userId
+	 */
+	public void delectFansCounts(@Param("userId")String userId);
+	/**
 	 * 用户增加关注数
 	 * @param fansId
 	 */
 	
 	public void addFollowersCounts(@Param("userId")String userId);
+	/**
+	 * 用户减少关注数
+	 * @param userId
+	 */
+	public void delectFollowersCounts(@Param("userId")String userId);
 	/**
 	 * 用户增加被收藏数
 	 */

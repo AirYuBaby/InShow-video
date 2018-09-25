@@ -66,17 +66,17 @@ public class userController {
 		pv.setUserClickvideo(userClickvideo);	
 		return JSONResult.ok(pv);
 	}
-	@ApiOperation(value="粉丝关注用户的信息",notes="粉丝关注用户的接口")
+	@ApiOperation(value="粉丝取消关注的接口",notes="粉丝取消关注用户的接口")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name="userId",value="用户ID",required=true,dataType="String",paramType="form"),
-			@ApiImplicitParam(name="fansId",value="粉丝ID",required=true,dataType="String",paramType="form")
+			@ApiImplicitParam(name="userId",value="用户ID（就是我的id）",required=true,dataType="String",paramType="form"),
+			@ApiImplicitParam(name="followId",value="被关注人id（就是对方的id）",required=true,dataType="String",paramType="form")
 	})
 	@PostMapping("/fanspick")
-	public JSONResult fanspick(String userId,String fansId) {
-		if(StringUtils.isBlank(userId)||StringUtils.isBlank(fansId)) {
+	public JSONResult fanspick(String followId,String userId) {
+		if(StringUtils.isBlank(userId)||StringUtils.isBlank(followId)) {
 			return JSONResult.errorMsg("");
 		}
-		userservice.fansPickusers(userId, fansId);
+		userservice.fansPickusers(followId, userId);
 		return JSONResult.ok("关注成功");
 	}
 	
@@ -85,12 +85,12 @@ public class userController {
 			@ApiImplicitParam(name="userId",value="用户ID（就是我的id）",required=true,dataType="String",paramType="form"),
 			@ApiImplicitParam(name="followId",value="被关注人id（就是对方的id）",required=true,dataType="String",paramType="form")
 	})
-	@PostMapping("/fanspick")
+	@PostMapping("/fansUnpick")
 	public JSONResult fansUnpick(String userId,String followId) {
 		if(StringUtils.isBlank(userId)||StringUtils.isBlank(followId)) {
 			return JSONResult.errorMsg("数据出错");
 		}
-//		userservice.fansUnpickUsers(userId, followId);
+		userservice.fansUnpickusers(followId, userId);
 		return JSONResult.ok("关注成功");
 	}
 }
