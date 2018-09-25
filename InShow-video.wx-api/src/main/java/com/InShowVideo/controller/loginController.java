@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.InShowVideo.pojo.Users;
@@ -27,6 +28,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 @RestController
 @Api(value="用户登陆模块")
+@RequestMapping("/login")
 public class loginController<K> extends BasicController{
 	@Autowired
 	private IUsersService service;
@@ -39,16 +41,16 @@ public class loginController<K> extends BasicController{
 	})
 	@PostMapping("/login")
 	public JSONResult login(
-			String js_code) {
-		if(StringUtils.isNotBlank(js_code)) {
+			String jsCode) {
+		if(StringUtils.isNotBlank(jsCode)) {
 			//appid跟appsecret都是注册小程序后才存在的常量
-			System.out.println("----------"+js_code);
-			String appID = "wxa35bbd6556297ebd";
-			String appSecret = "76d8c34dde69c14683bfc7519636900a";
+			System.out.println("----------"+jsCode);
+			String appID = "";
+			String appSecret = "";
 			//测试用假数据
-			String openid = "1111";
+			String openid = "";
 			try {
-				String wxUrl = "https://api.weixin.qq.com/sns/jscode2session?appid="+appID+"&secret="+appSecret+"&js_code="+js_code+"&grant_type=authorization_code";
+				String wxUrl = "https://api.weixin.qq.com/sns/jscode2session?appid="+appID+"&secret="+appSecret+"&js_code="+jsCode+"&grant_type=authorization_code";
 				String wxdata = http.httpsRequest(wxUrl, "GET", null);
 				
 				System.out.println("------------"+wxdata);
@@ -56,7 +58,7 @@ public class loginController<K> extends BasicController{
 				
 				openid = data.getString("openId");
 				String key = data.getString("session_key");
-				
+				System.out.println(openid);
 				Users user = new Users();
 				user.setOpenid(openid);
 				user.setUsername(data.getString("Username"));
