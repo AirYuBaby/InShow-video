@@ -235,7 +235,7 @@ public class videoController extends BasicController {
 		videoService.userunLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
-	
+
 	@ApiOperation(value = "用户取消点赞的视频的接口")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
 			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"),
@@ -245,4 +245,5 @@ public class videoController extends BasicController {
 		videoService.userUnclickVideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
+	
 }

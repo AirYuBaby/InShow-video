@@ -36,4 +36,9 @@ public interface UsersMapper extends MyMapper<Users> {
 	 * @param publisherId
 	 */
 	public void delectreceiveLikeCounts(@Param("publisherId")String publisherId);
+	/**
+	 * 用户增加被举报数
+	 * @param userId
+	 */
+	public void addreportCounts(@Param("userId")String userId);
 }

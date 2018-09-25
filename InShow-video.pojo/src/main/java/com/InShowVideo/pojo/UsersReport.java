@@ -12,7 +12,7 @@ public class UsersReport implements Serializable {
 
     private String dealVideoId;
 
-    private String title;
+    private String type;
 
     private String content;
 
@@ -46,13 +46,6 @@ public class UsersReport implements Serializable {
         this.dealVideoId = dealVideoId;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getContent() {
         return content;
@@ -77,4 +70,12 @@ public class UsersReport implements Serializable {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

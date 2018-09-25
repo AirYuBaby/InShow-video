@@ -37,4 +37,7 @@
   	update users set receive_like_counts=receive_like_counts-1 where id=#{userId}
   </update>
   
+  <update id="addreportCounts" parameterType="String">
+  	update users set report_counts=report_counts+1 where id=#{userId}
+  </update>
 </mapper>
