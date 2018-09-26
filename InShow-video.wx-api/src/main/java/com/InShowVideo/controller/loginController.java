@@ -2,30 +2,34 @@ package com.InShowVideo.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.client.RestTemplate;
+ 
 import com.InShowVideo.pojo.Users;
 import com.InShowVideo.services.Impl.IUsersService;
 import com.InShowVideo.utils.AES_128_CBC;
 import com.InShowVideo.utils.HttpRequest;
 import com.InShowVideo.utils.JSONResult;
+import com.google.gson.Gson;
 
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 @RestController
 @Api(value="用户登陆模块")
 @RequestMapping("/login")
@@ -34,30 +38,47 @@ public class loginController<K> extends BasicController{
 	private IUsersService service;
 	HttpRequest http = new HttpRequest();
 	AES_128_CBC cbc = new AES_128_CBC();
+	WxMaJscode2SessionResult session = null;
 	@ApiOperation(value = "用户登录访问的接口")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="js_code", value="唯一登陆码", required=true, 
+		@ApiImplicitParam(name="jsCode", value="唯一登陆码", required=true, 
 				dataType="String", paramType="query"),
 	})
 	@PostMapping("/login")
-	public JSONResult login(
-			String jsCode) {
-		if(StringUtils.isNotBlank(jsCode)) {
+	public @ResponseBody JSONResult login(@RequestBody String js_code,@RequestBody Object userInfo) {
+//		if(StringUtils.isNotBlank(jsCode)) {
 			//appid跟appsecret都是注册小程序后才存在的常量
-			System.out.println("----------"+jsCode);
-			String appID = "";
-			String appSecret = "";
+			System.out.println("----------"+js_code);
+			System.out.println("***********"+userInfo);
+			String appID = "wx9a9f41060138e378";
+			String appSecret = "5402c2c4c55644960a0b683e2b7eb65c";
 			//测试用假数据
 			String openid = "";
+			String code =js_code;
+			System.out.println("******************************"+code);
 			try {
-				String wxUrl = "https://api.weixin.qq.com/sns/jscode2session?appid="+appID+"&secret="+appSecret+"&js_code="+jsCode+"&grant_type=authorization_code";
+				String wxUrl ="https://api.weixin.qq.com/sns/jscode2session?appid="+appID+"&secret="+appSecret+"&js_code="+js_code+"&grant_type=authorization_code";
+				//String wxUrl ="https://api.weixin.qq.com/sns/jscode2session?appid={appID}&secret={appSecret}&js_code={js_code}&grant_type=authorization_code";
 				String wxdata = http.httpsRequest(wxUrl, "GET", null);
-				
 				System.out.println("------------"+wxdata);
 				JSONObject data = new JSONObject(wxdata);
-				
-				openid = data.getString("openId");
+				System.out.println("********************************"+data.toString());
+				openid = data.getString("openid");
 				String key = data.getString("session_key");
+				
+//				RestTemplate restTemplate =new RestTemplate();
+//				
+//				ResponseEntity<String> responseEntity =restTemplate.exchange(wxUrl, HttpMethod.GET,null,String.class);
+//				if(responseEntity!=null&&responseEntity.getStatusCode()==HttpStatus.OK) {
+//					String sessionData =responseEntity.getBody();
+//					Gson gson = new Gson();
+//					data = gson.fromJson(sessionData, JSONObject.class);
+//					openid = data.getString("openId");
+//					String key = data.getString("session_key");
+//				}
+				
+
+
 				System.out.println(openid);
 				Users user = new Users();
 				user.setOpenid(openid);
@@ -87,7 +108,7 @@ public class loginController<K> extends BasicController{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+//		}
 		
 		
 		return JSONResult.errorMsg("未知错误");
