@@ -43,13 +43,19 @@ public class loginController<K> extends BasicController{
 	@ApiImplicitParams({
 		@ApiImplicitParam(name="jsCode", value="唯一登陆码", required=true, 
 				dataType="String", paramType="query"),
+		@ApiImplicitParam(name="rawsData", value="JSON格式user数据", required=true, 
+		dataType="String", paramType="query"),
 	})
 	@PostMapping("/login")
-	public @ResponseBody JSONResult login(@RequestBody String js_code,@RequestBody Object userInfo) {
+	public @ResponseBody JSONResult login(@RequestBody String js_code,
+			@RequestBody String rawsData) {
 //		if(StringUtils.isNotBlank(jsCode)) {
 			//appid跟appsecret都是注册小程序后才存在的常量
+			if(js_code.indexOf("{")==0) {
+				js_code = new JSONObject(js_code).getString("js_code");
+			}
 			System.out.println("----------"+js_code);
-			System.out.println("***********"+userInfo);
+			System.out.println("***********"+rawsData);
 			String appID = "wx9a9f41060138e378";
 			String appSecret = "5402c2c4c55644960a0b683e2b7eb65c";
 			//测试用假数据
@@ -66,6 +72,8 @@ public class loginController<K> extends BasicController{
 				openid = data.getString("openid");
 				String key = data.getString("session_key");
 				
+				JSONObject userInfo = new JSONObject(rawsData);
+				System.out.println("********************************"+userInfo.toString());
 //				RestTemplate restTemplate =new RestTemplate();
 //				
 //				ResponseEntity<String> responseEntity =restTemplate.exchange(wxUrl, HttpMethod.GET,null,String.class);
@@ -82,14 +90,15 @@ public class loginController<K> extends BasicController{
 				System.out.println(openid);
 				Users user = new Users();
 				user.setOpenid(openid);
-				user.setUsername(data.getString("Username"));
-				user.setNickname(data.getString("Nickname")); 
-				user.setAvatarurl(data.getString("Avatarurl")); 
+				user.setUsername(userInfo.getString("Username"));
+				user.setNickname(userInfo.getString("Nickname")); 
+				user.setAvatarurl(userInfo.getString("Avatarurl")); 
 //				user.setGender(Integer.valueOf(gender)); 
-				user.setGender(Integer.valueOf(data.getString("Gender")));
-				user.setCity(data.getString("City"));
-				user.setProvince(data.getString("Province")); 
-				user.setCountry(data.getString("Country")); 
+				user.setGender(Integer.valueOf(userInfo.getString("Gender")));
+				user.setCity(userInfo.getString("City"));
+				user.setProvince(userInfo.getString(" "));
+				//user.setProvince(userInfo.getString("Province")); 
+				user.setCountry(userInfo.getString("Country")); 
 				
 				
 				Users u2 = service.updataUser(user);
