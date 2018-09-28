@@ -41,29 +41,40 @@ public class loginController<K> extends BasicController{
 	WxMaJscode2SessionResult session = null;
 	@ApiOperation(value = "用户登录访问的接口")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="jsCode", value="唯一登陆码", required=true, 
-				dataType="String", paramType="query"),
+		@ApiImplicitParam(name="js_code", value="唯一登陆码", required=true, 
+				dataType="String", paramType="form"),
 		@ApiImplicitParam(name="rawsData", value="JSON格式user数据", required=true, 
-		dataType="String", paramType="query"),
-	})
+		dataType="String", paramType="form"),
+		@ApiImplicitParam(name="appID", value="appId", required=true, 
+		dataType="String", paramType="form"),
+		@ApiImplicitParam(name="appSecret", value="appSecret", required=true, 
+		dataType="String", paramType="form"),
+		//query
+	}) 
+	//@RequestBody
 	@PostMapping("/login")
-	public @ResponseBody JSONResult login(@RequestBody String js_code,
-			@RequestBody String rawsData) {
+	public JSONResult login( String js_code,
+			 String rawsData,
+			 String appID,
+			 String appSecret) {
 //		if(StringUtils.isNotBlank(jsCode)) {
 			//appid跟appsecret都是注册小程序后才存在的常量
+		System.out.println("----appID-----"+appID);
+		System.out.println("****appSecret******"+appSecret);
 			if(js_code.indexOf("{")==0) {
 				js_code = new JSONObject(js_code).getString("js_code");
 			}
-			System.out.println("----------"+js_code);
-			System.out.println("***********"+rawsData);
-			String appID = "wx9a9f41060138e378";
-			String appSecret = "5402c2c4c55644960a0b683e2b7eb65c";
+			
+//			String appID = "wx1d4ad7d9f581827a";
+//			String appSecret = "91bc5b1a6aa524fbc9f47318da4cac15";
+//			String appID = "wx2d76ca429ca918c5";
+//			String appSecret = "ea4732a65b68b241581a167e58899967";
 			//测试用假数据
 			String openid = "";
 			String code =js_code;
 			System.out.println("******************************"+code);
 			try {
-				String wxUrl ="https://api.weixin.qq.com/sns/jscode2session?appid="+appID+"&secret="+appSecret+"&js_code="+js_code+"&grant_type=authorization_code";
+				String wxUrl ="https://api.weixin.qq.com/sns/jscode2session?appid="+appID.trim()+"&secret="+appSecret.trim()+"&js_code="+js_code.trim()+"&grant_type=authorization_code".trim();
 				//String wxUrl ="https://api.weixin.qq.com/sns/jscode2session?appid={appID}&secret={appSecret}&js_code={js_code}&grant_type=authorization_code";
 				String wxdata = http.httpsRequest(wxUrl, "GET", null);
 				System.out.println("------------"+wxdata);
@@ -90,18 +101,23 @@ public class loginController<K> extends BasicController{
 				System.out.println(openid);
 				Users user = new Users();
 				user.setOpenid(openid);
-				user.setUsername(userInfo.getString("Username"));
-				user.setNickname(userInfo.getString("Nickname")); 
-				user.setAvatarurl(userInfo.getString("Avatarurl")); 
+				user.setUsername(userInfo.getString("nickName"));
+				user.setNickname(userInfo.getString("nickName")); 
+				user.setAvatarurl(userInfo.getString("avatarUrl")); 
 //				user.setGender(Integer.valueOf(gender)); 
-				user.setGender(Integer.valueOf(userInfo.getString("Gender")));
-				user.setCity(userInfo.getString("City"));
-				user.setProvince(userInfo.getString(" "));
-				//user.setProvince(userInfo.getString("Province")); 
-				user.setCountry(userInfo.getString("Country")); 
+				user.setGender(userInfo.getInt("gender"));
+				user.setCity(userInfo.getString("city"));
+//				user.setProvince(userInfo.getString(" "));
+				user.setProvince(userInfo.getString("province")); 
+				user.setCountry(userInfo.getString("country")); 
+				user.setFansCounts(0);
+				user.setFollowCounts(0);
+				user.setReceiveLikeCounts(0);
+				user.setReportCounts(0);
 				
 				
 				Users u2 = service.updataUser(user);
+				System.out.println("--------------入库完毕");
 				if(u2!=null) {
 					String token = setUserRedisSessionToken(u2);
 					Map map = new HashMap<>();
