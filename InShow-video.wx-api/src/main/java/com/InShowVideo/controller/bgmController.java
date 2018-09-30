@@ -29,6 +29,7 @@ public class bgmController extends BasicController {
 	@PostMapping("/getAll")
 	public JSONResult getBgmByPage(String page) {
 		System.out.println("-------------------"+page);
+		//System.out.println("*******************测试热部署");
 		if (page == null) {
 			return JSONResult.errorMsg("页码错误，你的小可爱呢不到视频啦");
 		} else {
