@@ -28,10 +28,13 @@ public class bgmController extends BasicController {
 	@ApiImplicitParam(name = "page", value = "动态加载的数据页数（从0开始）", required = true, dataType = "int", paramType = "query")
 	@PostMapping("/getAll")
 	public JSONResult getBgmByPage(String page) {
+		System.out.println("-------------------"+page);
 		if (page == null) {
 			return JSONResult.errorMsg("页码错误，你的小可爱呢不到视频啦");
 		} else {
-			List<Bgm> list = bservice.getAllbgm(0);
+			
+			int Page=Integer.valueOf(page).intValue();
+			List<Bgm> list = bservice.getAllbgm(Page);
 			return JSONResult.ok(list);
 		}
 
@@ -39,13 +42,13 @@ public class bgmController extends BasicController {
 
 	@ApiOperation(value = "按热度获取bgm列表的接口", notes = "按热度获取bgm列表的接口")
 	@ApiImplicitParam(name = "page", value = "动态加载的数据页数（从0开始）", required = true, dataType = "int", paramType = "query")
-	@GetMapping("/getAllByHart")
-	public JSONResult getBgmByHart(int page) {
+	@PostMapping("/getAllByHart")
+	public JSONResult getBgmByHart(String page) {
 		// 测试choose接口
 		// bservice.bgmBeChoose("1001");
-
-		if (page >= 0) {
-			List<Bgm> list = bservice.getBgmByChoose(page);
+		int Page=Integer.valueOf(page).intValue();
+		if (Page >= 0) {
+			List<Bgm> list = bservice.getBgmByChoose(Page);
 			for (Bgm bgm : list) {
 				System.out.println();
 			}
