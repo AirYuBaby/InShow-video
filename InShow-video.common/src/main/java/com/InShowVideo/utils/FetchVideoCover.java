@@ -21,7 +21,7 @@ public class FetchVideoCover {
 		
 		// 指定截取第1秒
 		command.add("-ss");
-		command.add("00:00:01");
+		command.add("00:00:02");
 				
 		command.add("-y");
 		command.add("-i");
@@ -74,14 +74,4 @@ public class FetchVideoCover {
 		this.ffmpegEXE = ffmpegEXE;
 	}
 	
-	public static void main(String[] args) {
-		// 获取视频信息。
-		FetchVideoCover videoInfo = new FetchVideoCover("c:\\ffmpeg\\bin\\ffmpeg.exe");
-		try {
-			videoInfo.getCover("c:\\北京北京.avi","c:\\北京.jpg");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

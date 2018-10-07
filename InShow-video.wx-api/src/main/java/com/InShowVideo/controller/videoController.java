@@ -49,19 +49,25 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "audioId", value = "背景音乐id", required = false, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "topicId", value = "参与话题id", required = false, dataType = "String", paramType = "form"),
-			@ApiImplicitParam(name = "videoSecond", value = "背景音乐播放长度", required = true, dataType = "double", paramType = "form"),
-			@ApiImplicitParam(name = "videoWidth", value = "视频宽度", required = true, dataType = "int", paramType = "form"),
-			@ApiImplicitParam(name = "videoHeight", value = "视频高度", required = true, dataType = "int", paramType = "form"),
+			@ApiImplicitParam(name = "videoSecond", value = "背景音乐播放长度", required = true, dataType = "String", paramType = "form"),
+			@ApiImplicitParam(name = "videoWidth", value = "视频宽度", required = true, dataType = "String", paramType = "form"),
+			@ApiImplicitParam(name = "videoHeight", value = "视频高度", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "desc", value = "视频描述", required = false, dataType = "String", paramType = "form"),
-			@ApiImplicitParam(name = "status", value = "视频状态", required = true, dataType = "int", paramType = "form"),
-			@ApiImplicitParam(name = "bgmPosition", value = "bgm的起始播放位置", required = true, dataType = "int", paramType = "form"), })
+			@ApiImplicitParam(name = "status", value = "视频状态", required = true, dataType = "String", paramType = "form"),
+			@ApiImplicitParam(name = "bgmPosition", value = "bgm的起始播放位置", required = true, dataType = "String", paramType = "form"), })
 	@PostMapping(value = "/uploadVideos", headers = "content-type=multipart/form-data")
 	public JSONResult uploadVideos(
 
-			String userId, String audioId, String topicId, double videoSecond, int videoWidth, int videoHeight,
-			String desc, int status, int bgmPosition, @ApiParam(value = "短视频", required = true) MultipartFile file)
+			String userId, String audioId, String topicId, String videoSecond, String videoWidth, String videoHeight,
+			String desc, String status, String bgmPosition, @ApiParam(value = "短视频", required = true) MultipartFile file)
 			throws Exception {
-
+		System.out.println("-------vedioSecent------"+videoSecond);
+		int videoWidth2 = Integer.parseInt(videoWidth);
+		int videoHeight2 = Integer.parseInt(videoHeight);
+		int status2 = Integer.parseInt(status);
+		int bgmPosition2 = Integer.parseInt(bgmPosition);
+		double videoSecond2 = Double.parseDouble(videoSecond);
+		System.out.println("-------vedioSecent------"+videoSecond);
 		if (StringUtils.isBlank(userId)) {
 			return JSONResult.errorMsg("用户Id不能为空");
 		}
@@ -120,7 +126,7 @@ public class videoController extends BasicController {
 			String videoOutputName = UUID.randomUUID().toString() + ".mp4";
 			videoPathDB = "/" + userId + "/video" + "/" + videoOutputName;
 			videoFinalPath = FILESPACE + videoPathDB;
-			videoMp3.convertor(videoInputPath, audioInputPath, bgmPosition, videoSecond, videoFinalPath);
+			videoMp3.convertor(videoInputPath, audioInputPath, bgmPosition2, videoSecond2, videoFinalPath);
 
 		}
 		if (StringUtils.isNotBlank(topicId)) {
@@ -136,15 +142,15 @@ public class videoController extends BasicController {
 
 		video.setAudioId(audioId);
 		video.setUserId(userId);
-		video.setVideoSeconds((float) videoSecond);
+		video.setVideoSeconds((float) videoSecond2);
 		video.setCoverPath(coverPathDB);
 		video.setCreateTime(new Date());
 		video.setVideoDesc(desc);
-		video.setVideoHeight(videoHeight);
-		video.setVideoWidth(videoWidth);
+		video.setVideoHeight(videoHeight2);
+		video.setVideoWidth(videoWidth2);
 		video.setTopicId(topicId);
-		video.setBgmPosition(bgmPosition);
-		video.setStatus(status);
+		video.setBgmPosition(bgmPosition2);
+		video.setStatus(status2);
 		video.setVideoPath(videoPathDB);
 
 		String videoId = videoService.saveVideo(video);
@@ -244,6 +250,18 @@ public class videoController extends BasicController {
 	public JSONResult userUnclickVideo(String userId,String videoId,String publisherId) {
 		videoService.userUnclickVideos(userId, videoId, publisherId);
 		return JSONResult.ok();
+	}
+	
+	@ApiOperation(value = "获取我的视频的接口")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
+			@ApiImplicitParam(name = "page", value = "页数", paramType = "form") })
+	@PostMapping("/myVideo")
+	public JSONResult myVideo(String userId, int page) {
+		if(userId!=null) {
+			PagedResult pr = videoService.getVideoByUserid(userId, page);
+			return JSONResult.ok(pr);
+		}
+		return JSONResult.errorMsg("获取失败");
 	}
 	
 }

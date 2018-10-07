@@ -14,7 +14,7 @@ public class BasicController {
 	
 	public static final String USER_REDIS_SESSION="user-redis-session";
 	
-	public static final String FILESPACE = "E:\\fun-video";
+	public static final String FILESPACE = "E:\\inShow-Video";
 	
 	public static final String FFMPEG_EXE = "D:\\ffmpeg\\bin\\ffmpeg.exe";
 	

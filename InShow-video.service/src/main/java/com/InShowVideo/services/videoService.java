@@ -60,5 +60,12 @@ public interface videoService {
 	 * @param videoId
 	 * @param publisherId
 	 */
-	public void userUnclickVideos(String userId, String videoId, String publisherId);
+	public void userUnclickVideos(String userId, String videoId,String publisherId);
+	/**
+	 * 获取用户发布的视频
+	 * @param userid
+	 * @param page
+	 * @return
+	 */
+	public PagedResult getVideoByUserid(String userid,int page);
 }

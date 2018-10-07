@@ -160,6 +160,19 @@ public class IVideoService implements videoService {
 		videosMapperCustom.delectClickcountsByvideo(videoId);
 		
 	}
+
+	@Override
+	public PagedResult getVideoByUserid(String userid, int page) {
+		Example e = new Example(Videos.class);
+		Criteria c =  e.createCriteria();
+		c.andEqualTo("userId", userid);
+		PageHelper.startPage(page, 10);
+		List<Videos> list = videoMapper.selectByExample(e);
+		PagedResult pr = new PagedResult();
+		pr.setPage(page);
+		pr.setRows(list);
+		return pr;
+	}
 	
 
 
