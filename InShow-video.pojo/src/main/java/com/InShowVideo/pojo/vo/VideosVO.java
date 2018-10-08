@@ -34,7 +34,8 @@ public class VideosVO {
     
     private String avatarUrl;
     private String nickname;
-
+    
+    private String topicName;
 
     public String getId() {
         return id;
@@ -158,13 +159,6 @@ public class VideosVO {
 		this.avatarUrl = avatarUrl;
 	}
 
-	public String getTopicId() {
-		return topicId;
-	}
-
-	public void setTopicId(String topicId) {
-		this.topicId = topicId;
-	}
 
 	public Integer getBgmPosition() {
 		return bgmPosition;
@@ -173,4 +167,22 @@ public class VideosVO {
 	public void setBgmPosition(Integer bgmPosition) {
 		this.bgmPosition = bgmPosition;
 	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public String getTopicName() {
+		return topicName;
+	}
+
+	public void setTopicName(String topicName) {
+		this.topicName = topicName;
+	}
+
+	
 }

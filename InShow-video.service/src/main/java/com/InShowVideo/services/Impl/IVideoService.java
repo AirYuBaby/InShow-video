@@ -45,8 +45,8 @@ public class IVideoService implements videoService {
 	public PagedResult getAllVideos(int page) {
 		System.out.println("-------begin");
 		PageHelper.startPage(page, 4);
-		List<Videos> videos = videoMapper.selectAll();
-		System.out.println(videos);
+		List<VideosVO> videosVo = videosMapperCustom.getAllvideos();
+		System.out.println(videosVo);
 		System.out.println("----------开始分页");
 		System.out.println("----------分");
 
@@ -55,7 +55,7 @@ public class IVideoService implements videoService {
 
 		System.out.println("----------啦");
 
-		pagedResult.setRows(videos);
+		pagedResult.setRows(videosVo);
 		pagedResult.setPage(page);
 		System.out.println("-------end");
 		return pagedResult;

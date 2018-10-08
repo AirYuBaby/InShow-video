@@ -19,8 +19,17 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
     <result column="bgm_position" jdbcType="INTEGER" property="bgmPosition" />
-   
+   <result column="topicName" jdbcType="VARCHAR" property="topicName" />
   </resultMap>
+  
+  <select id="getAllvideos" resultMap ="BaseResultMap" parameterType="String">
+  select v.*,u.avatarUrl as avatarUrl,u.nickname as nickname,t.topic_name as topicName from (videos v 
+		left join users u on v.user_id = u.id) left join topics t on v.topic_id = t.id
+		where 
+			1=1 
+			order by v.create_time desc
+  </select>
+  
   <select id="queryMyLikeVideos" resultMap ="BaseResultMap" parameterType="String">
   select v.*,u.avatarUrl as avatarUrl,u.nickname as nickname from videos v 
 		left join users u on v.user_id = u.id

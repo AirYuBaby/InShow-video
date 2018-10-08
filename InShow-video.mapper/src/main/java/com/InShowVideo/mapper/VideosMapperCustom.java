@@ -41,4 +41,5 @@ public interface VideosMapperCustom extends MyMapper<Videos> {
 	 */
 	public void delectClickcountsByvideo(@Param("videoId")String videoId);
 	
+	public List<VideosVO> getAllvideos();
 }
