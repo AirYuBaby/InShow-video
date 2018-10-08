@@ -30,7 +30,7 @@ public class userController {
 	@PostMapping("/query")
 	public JSONResult query(String userId) throws Exception{
 		
-		
+		System.out.println(userId);
 		if(StringUtils.isBlank(userId)) {
 			return JSONResult.errorMap("用户id不能为空");
 		}
