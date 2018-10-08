@@ -229,6 +229,7 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"), })
 	@PostMapping("/userClickvideo")
 	public JSONResult userClickvideo(String userId, String videoId) {
+		System.out.println("**************************"+userId+"**************"+videoId);
 		videoService.userClickvideos(userId, videoId);
 		return JSONResult.ok();
 	}

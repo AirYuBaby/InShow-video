@@ -33,13 +33,13 @@ import io.swagger.annotations.ApiParam;
 public class topicsController extends BasicController {
 	@Autowired
 	private topicsService tService;
-	@ApiOperation(value = "上传视频", notes = "上传视频的接口")
+	@ApiOperation(value = "上传话题", notes = "上传话题的接口")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "topicName", value = "话题名称", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "topicDesc", value = "话题描述", required = true, dataType = "String", paramType = "form"),
 			 })
-	@PostMapping(value = "/uploadVideos", headers = "content-type=multipart/form-data")
+	@PostMapping(value = "/uploadtopic", headers = "content-type=multipart/form-data")
 	public JSONResult uploadtopic(
 			String userId,
 			String topicName,
@@ -91,6 +91,7 @@ public class topicsController extends BasicController {
 		topic.setTopicDesc(topicDesc);
 		topic.setTopicName(topicName);
 		topic.setUserId(userId);
+		topic.setStatus(1);
 		
 		String topicId = tService.saveTopic(topic);
 		return JSONResult.ok(topicId);
