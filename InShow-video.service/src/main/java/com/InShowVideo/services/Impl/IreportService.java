@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.InShowVideo.mapper.UsersMapper;
 import com.InShowVideo.mapper.UsersReportMapper;
+import com.InShowVideo.mapper.VideosMapperCustom;
 import com.InShowVideo.pojo.UsersReport;
 import com.InShowVideo.services.reportService;
 @Service
@@ -18,6 +19,8 @@ public class IreportService implements reportService {
 	private UsersReportMapper usersReportMapper;
 	@Autowired
 	private UsersMapper userMapper;
+	@Autowired
+	private VideosMapperCustom videosMapperCustom;
 	
 	@Override
 	public void saveReport(UsersReport userReport) {
@@ -28,6 +31,9 @@ public class IreportService implements reportService {
 		usersReportMapper.insert(userReport);
 		
 		userMapper.addreportCounts(userReport.getDealUserId());
+		
+		videosMapperCustom.changeVideoStatus(userReport.getDealVideoId());
+		
 	}
 
 }

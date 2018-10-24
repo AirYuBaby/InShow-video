@@ -18,19 +18,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AES_128_CBC {
 
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//
-//		String content = "hello";
-//		String key = "aaaaaaaa";
-//		String iv = "abcdefghijklmnop";
-//
-//		System.out.println("加密前：" + byteToHexString(content.getBytes()));
-//		byte[] encrypted = AES_CBC_Encrypt(content.getBytes(), key.getBytes(), iv.getBytes());
-//		System.out.println("加密后：" + byteToHexString(encrypted));
-//		byte[] decrypted = AES_CBC_Decrypt(encrypted, key.getBytes(), iv.getBytes());
-//		System.out.println("解密后：" + byteToHexString(decrypted));
-//	}
 
 	public static byte[] AES_CBC_Encrypt(byte[] content, byte[] keyBytes, byte[] iv) {
 

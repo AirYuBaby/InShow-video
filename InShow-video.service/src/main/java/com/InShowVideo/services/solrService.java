@@ -2,6 +2,7 @@ package com.InShowVideo.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServerException;
 
@@ -28,7 +29,7 @@ public interface solrService {
 	 * @throws SolrServerException
 	 * @throws IOException
 	 */
-	public List<Users> selectUserFansByKey(String userid, String key, int page)throws SolrServerException, IOException ;
+	public List<Map> selectUserFansByKey(String userid, String key, int page)throws SolrServerException, IOException ;
 	/**
 	 * 根据关键字查询我关注的人（key字段设置为""，则查找所有我关注的人）
 	 * @param userid

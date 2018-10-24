@@ -11,12 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.InShowVideo.mapper.TopicsMapper;
 import com.InShowVideo.mapper.UsersMapper;
+import com.InShowVideo.mapper.VideosMapper;
+import com.InShowVideo.mapper.VideosMapperCustom;
 import com.InShowVideo.pojo.Bgm;
 import com.InShowVideo.pojo.Topics;
 import com.InShowVideo.pojo.Users;
+import com.InShowVideo.pojo.Videos;
+import com.InShowVideo.pojo.vo.VideosVO;
 import com.InShowVideo.pojo.vo.topicsVO;
 import com.InShowVideo.services.topicsService;
+import com.InShowVideo.utils.PagedResult;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -27,27 +33,33 @@ public class ITopicsService implements topicsService {
 	@Autowired
 	private UsersMapper uMapper;
 	@Autowired
+	private VideosMapper videosMapper;
+	@Autowired
+	private VideosMapperCustom videosMapperCustom;
+	@Autowired
 	private Sid sid;
 	@Override
 	public List<topicsVO> getAllTopic(int page) {
-		PageHelper.startPage(page, 10);
+		PageHelper.startPage(page, 7);
 		List<Topics> list = tMapper.selectAll();
 		
-		System.out.println("--------topic--userid----------------"+list.get(0).getUserId());
 		
-		ArrayList<topicsVO> voList = new ArrayList<topicsVO>();
+		
+		List<topicsVO> voList = new ArrayList<topicsVO>();
 		String name = "";
-		topicsVO tVO = new topicsVO();
+		String avargUrl ="";
 		for( Topics t: list ) {
-			Example userExample = new Example(Topics.class);
+			topicsVO tVO = new topicsVO();
+			Example userExample = new Example(Users.class);
 			Criteria c =  userExample.createCriteria();
 			c.andEqualTo("id", t.getUserId());
 			
 			name = uMapper.selectOneByExample(userExample).getUsername();
+			avargUrl=uMapper.selectOneByExample(userExample).getAvatarurl();
 			
-			System.out.println("----------getname-----------"+name);
 			tVO.setTopic(t);
 			tVO.setUsername(name);
+			tVO.setAvargUrl(avargUrl);
 			voList.add(tVO);
 		}
 		
@@ -56,17 +68,20 @@ public class ITopicsService implements topicsService {
 
 	@Override
 	public List<topicsVO> getAllTopicByHart(int page) {
-		PageHelper.startPage(page, 10);
+		PageHelper.startPage(page, 7);
 		List<Topics> list = tMapper.queryAllByHart();
 		ArrayList<topicsVO> voList = new ArrayList<topicsVO>();
 		String name = "";
-		topicsVO tVO = new topicsVO();
+		String avargUrl ="";
 		for( Topics t: list ) {
+			topicsVO tVO = new topicsVO();
 			Example userExample = new Example(Topics.class);
 			Criteria c =  userExample.createCriteria();
 			c.andEqualTo("id", t.getUserId());
 			
 			name = uMapper.selectOneByExample(userExample).getUsername();
+			avargUrl=uMapper.selectOneByExample(userExample).getAvatarurl();
+			tVO.setAvargUrl(avargUrl);
 			tVO.setTopic(t);
 			tVO.setUsername(name);
 			voList.add(tVO);
@@ -77,7 +92,7 @@ public class ITopicsService implements topicsService {
 
 	@Override
 	public void addVideotopic(String topicId) {
-		System.out.println("+++++++++++++++++****************"+topicId);
+		
 		tMapper.updateparticipationCounts(topicId);
 	}
 	
@@ -88,5 +103,14 @@ public class ITopicsService implements topicsService {
 		topic.setId(tid);
 		tMapper.insertSelective(topic);
 		return tid;
+	}
+
+	@Override
+	public List<VideosVO> getAllVideoInTopic(int page,String topicId) {
+		
+		PageHelper.startPage(page, 4);
+		List<VideosVO> videosVo = videosMapperCustom.getAllVideoInTopic(topicId);
+		
+		return videosVo;
 	}
 }

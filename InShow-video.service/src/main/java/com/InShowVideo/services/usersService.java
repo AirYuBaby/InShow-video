@@ -35,4 +35,8 @@ public interface usersService {
 	 * @return
 	 */
 	public Users updataUser(Users user);
+	
+	public boolean isfansPickuser(String follewId,String userId);
+	
+	public Users isInDb(String openId);
 }

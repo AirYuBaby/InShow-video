@@ -33,11 +33,11 @@ public class Swagger2 {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				// 设置页面标题
-				.title("使用swagger2构建短视频后端api接口文档")
+				.title("使用swagger2构建趣秀吧短视频后端api接口文档")
 				// 设置联系人
 				.contact(new Contact("Eriyuer-冯小宇", "网址", "Email"))
 				// 描述
-				.description("欢迎访问短视频接口文档，这里是描述信息")
+				.description("欢迎访问趣秀吧短视频接口文档，这里是描述信息")
 				// 定义版本号
 				.version("1.0").build();
 	}

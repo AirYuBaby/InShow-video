@@ -5,7 +5,13 @@ import com.InShowVideo.pojo.Topics;
 public class topicsVO {
 	private String username;
 	private Topics topic;
-	
+	private String avargUrl;
+	public String getAvargUrl() {
+		return avargUrl;
+	}
+	public void setAvargUrl(String avargUrl) {
+		this.avargUrl = avargUrl;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -22,6 +28,4 @@ public class topicsVO {
 	public String toString() {
 		return "topicsVO [username=" + username + ", topic=" + topic + "]";
 	}
-	
-
 }

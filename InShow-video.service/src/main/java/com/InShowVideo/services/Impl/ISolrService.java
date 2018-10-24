@@ -1,12 +1,19 @@
 package com.InShowVideo.services.Impl;
 
+import com.InShowVideo.mapper.UsersFansMapper;
 import com.InShowVideo.pojo.Bgm;
 import com.InShowVideo.pojo.Users;
+import com.InShowVideo.pojo.UsersFans;
 import com.InShowVideo.services.solrService;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.Query;
 
@@ -19,15 +26,18 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
 public class ISolrService implements solrService {
 	//solr服务器地址，要带上对用的core  即：/solr后的字段
-	String solrUrl = "http://192.168.1.4:8888/solr/inshow_video2";
+	String solrUrl = "http://192.168.1.9:8888/solr/inshow_video2";
 	HttpSolrClient solrClient = null;
 
+	@Autowired
+	UsersFansMapper UFmapper;
 	public ISolrService() {
-//		solrClient = new HttpSolrClient.Builder(solrUrl).build();
+
 		solrClient = new HttpSolrClient(solrUrl);
 	}
 
@@ -81,14 +91,14 @@ public class ISolrService implements solrService {
 		if(key==null)
 			key = "";
 		List<Bgm> blist = new ArrayList<Bgm>();
-		SolrDocumentList docs = getDocs("b_name:*" + key + "*", page, 10);
+		SolrDocumentList docs = getDocs("b_name:*" + key + "*", page*10, 10);
 		for (SolrDocument doc : docs) {
 			Bgm bgm = new Bgm();
 
 			bgm.setAuthor(String.valueOf(doc.get("b_author")));
-			// bgm.setChooseCount(Integer.valueOf(String.valueOf(doc.get("b_chooseCount"))));
+			
 			bgm.setChooseCount(Integer.valueOf(doc.get("b_chooseCount").toString()));
-			System.out.println("------------" + bgm.getChooseCount());
+			
 			bgm.setId(String.valueOf(doc.get("id")));
 			bgm.setName(String.valueOf(doc.get("b_name")));
 			bgm.setPath(String.valueOf(doc.get("b_path")));
@@ -105,11 +115,11 @@ public class ISolrService implements solrService {
 	 * @throws SolrServerException
 	 * @throws IOException
 	 */
-	public List<Users> selectUserFansByKey(String userid, String key, int page)
+	public List<Map> selectUserFansByKey(String userid, String key, int page)
 			throws SolrServerException, IOException {
 		if(key==null)
 			key = "";
-		List<Users> ulist = new ArrayList<Users>();
+		List<Map> ulist = new ArrayList<Map>();
 		SolrDocumentList udocs = getDocs("uf_user_id:" + userid, 0, 0);
 		ArrayList<String> list = new ArrayList<String>();
 		for (SolrDocument udoc : udocs) {
@@ -139,22 +149,9 @@ public class ISolrService implements solrService {
 		queryStr += (")");
 		query.setQuery(queryStr);
 		
-		
-		
-//		queryStr += ("AND u_username:*" + key + "*");
-		
-		//params用來查询或关系 ？？？调试失败
-//		ModifiableSolrParams params = new ModifiableSolrParams();
-//		for(String id : fansIds) 
-//			params.add("AND id", id);
-//		query.add(params);
-		
-		//addFilterQuery用来查询且关系
-//		query.addFilterQuery("u_username:*" + key + "*");
-		
 		// 设置分页
-		query.setStart(page);
-		query.setRows(10);
+		query.setStart(page*5);
+		query.setRows(5);
 		// 获取结果
 		System.out.println("-------开始找关键字");
 		QueryResponse response = solrClient.query(query);
@@ -169,8 +166,18 @@ public class ISolrService implements solrService {
 		}
 
 		for (SolrDocument doc : docs) {
+			//查找粉丝关系表--》我是否关注了粉丝
+			String fansid = doc.get("id").toString();
+			Example Example = new Example(UsersFans.class);
+			Criteria criteria = Example.createCriteria();
+			criteria.andEqualTo("userId",fansid);
+			criteria.andEqualTo("fanId",userid);
+			List<UsersFans> list2 = UFmapper.selectByExample(Example);
+			boolean isFans = (list2.size()!=0);
+			
+			
 			Users user = new Users();
-			// System.out.println("---username---"+doc.get("u_username"));
+			
 			if (doc != null) {
 				user.setAvatarurl(doc.get("u_avatarUrl") == null ? "" : doc.get("u_avatarUrl").toString());
 				user.setCity(doc.get("u_city") == null ? "" : doc.get("u_city").toString());
@@ -190,9 +197,12 @@ public class ISolrService implements solrService {
 				user.setUsername(doc.get("u_username").toString());
 
 			}
-
-			ulist.add(user);
+			Map m = new HashMap();
+			m.put("user", user);
+			m.put("isFans", isFans);
+			ulist.add(m);
 		}
+		
 		System.out.println("------结束啦------");
 		return ulist;
 	}
@@ -239,20 +249,11 @@ public class ISolrService implements solrService {
 		queryStr += (")");
 		query.setQuery(queryStr);
 		
-//		queryStr += ("AND u_username:*" + key + "*");
-		
-		//params用來查询或关系 ？？？调试失败
-//		ModifiableSolrParams params = new ModifiableSolrParams();
-//		for(String id : fansIds) 
-//			params.add("AND id", id);
-//		query.add(params);
-		
-		//addFilterQuery用来查询且关系
-//		query.addFilterQuery("u_username:*" + key + "*");
+
 		
 		// 设置分页
-		query.setStart(page);
-		query.setRows(10);
+		query.setStart(page*5);
+		query.setRows(5);
 		// 获取结果
 		System.out.println("-------开始找关键字");
 		QueryResponse response = solrClient.query(query);
@@ -296,18 +297,11 @@ public class ISolrService implements solrService {
 	}
 
 	public static void main(String[] args) throws SolrServerException, IOException {
-		System.out.println("--关注我的--");
-		List<Users> ulist = new ISolrService().selectUserFansByKey("2", "", 0);
-		for (Users user : ulist) {
-			System.out.println("------" + user.getUsername());
-		}
-		System.out.println("------------------------------------------------");
-		System.out.println("------------------------------------------------");
-		System.out.println("------------------------------------------------");
-		System.out.println("--我关注的--");
+		
+		List<Map> ulist = new ISolrService().selectUserFansByKey("2", "", 0);
+		
+		
 		List<Users> ulist2 = new ISolrService().selectUserFollorByKey("2", "", 0);
-		for (Users user : ulist2) {
-			System.out.println("------" + user.getUsername());
-		}
+		
 	}
 }

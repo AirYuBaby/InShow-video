@@ -5,6 +5,7 @@ public class publisherVideo {
 	private UsersVO publisher;
 	private boolean userLikevideo;
 	private boolean userClickvideo;
+	private boolean fansPickuser;
 	public UsersVO getPublisher() {
 		return publisher;
 	}
@@ -22,6 +23,12 @@ public class publisherVideo {
 	}
 	public void setUserClickvideo(boolean userClickvideo) {
 		this.userClickvideo = userClickvideo;
+	}
+	public boolean isFansPickuser() {
+		return fansPickuser;
+	}
+	public void setFansPickuser(boolean fansPickuser) {
+		this.fansPickuser = fansPickuser;
 	}
 	
 }

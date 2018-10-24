@@ -31,6 +31,8 @@ public class UsersVO implements Serializable {
     private Integer receiveLikeCounts;
 
     private Integer reportCounts;
+    
+    private boolean fansPickuser;
 
     private static final long serialVersionUID = 1L;
 
@@ -137,4 +139,12 @@ public class UsersVO implements Serializable {
     public void setReportCounts(Integer reportCounts) {
         this.reportCounts = reportCounts;
     }
+
+	public boolean isFansPickuser() {
+		return fansPickuser;
+	}
+
+	public void setFansPickuser(boolean fansPickuser) {
+		this.fansPickuser = fansPickuser;
+	}
 }

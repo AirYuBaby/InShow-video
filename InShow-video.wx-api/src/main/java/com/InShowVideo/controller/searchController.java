@@ -2,6 +2,7 @@ package com.InShowVideo.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -48,7 +49,7 @@ public class searchController {
 	})
 	@GetMapping("/getFansByKey")
 	public JSONResult searchFansByKey(String userid,String key,int page) throws SolrServerException, IOException{
-		List<Users> list = sservice.selectUserFansByKey(userid, key, page);
+		List<Map> list = sservice.selectUserFansByKey(userid, key, page);
 		return JSONResult.ok(list) ;
 	}
 	@ApiOperation(value="按关键字搜索关注列表的接口",notes="按关键字搜索关注列表的接口")

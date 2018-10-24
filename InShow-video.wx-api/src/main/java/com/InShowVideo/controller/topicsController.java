@@ -2,7 +2,6 @@ package com.InShowVideo.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -13,13 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.InShowVideo.pojo.Topics;
+import com.InShowVideo.pojo.Videos;
+import com.InShowVideo.pojo.vo.VideosVO;
 import com.InShowVideo.pojo.vo.topicsVO;
 import com.InShowVideo.services.topicsService;
 import com.InShowVideo.utils.JSONResult;
+import com.InShowVideo.utils.PagedResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -102,7 +105,10 @@ public class topicsController extends BasicController {
 	public JSONResult getAllTopics(int page) {
 		if(page>=0) {
 			List<topicsVO>  list = tService.getAllTopic(page);
-			JSONResult.ok(list);
+			for (topicsVO topicsVO : list) {
+				System.out.println(topicsVO.getUsername());
+			}
+			return JSONResult.ok(list);
 		}
 		return JSONResult.errorMsg("未知错误，你的小可爱迷路啦");
 	}
@@ -114,9 +120,25 @@ public class topicsController extends BasicController {
 	public JSONResult getAllTopicsByHart(int page) {
 		if(page>=0) {
 			List<topicsVO>  list = tService.getAllTopicByHart(page);
-			JSONResult.ok(list);
+			return JSONResult.ok(list);
 		}
 		return JSONResult.errorMsg("未知错误，你的小可爱迷路啦");
+	}
+	
+	
+	@ApiOperation(value="话题视频列表页",notes="话题视频列表")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="page",value="动态加载的数据页数（从0开始）",required=true,dataType="int",paramType="query"),
+		@ApiImplicitParam(name="topicId",value="话题ID",required=true,dataType="String",paramType="query")
+	})
+	@GetMapping("/getAllVideoInTopic")
+	public JSONResult getAllVideoInTopic(int page,String topicId) {
+		System.out.println(page+"--------"+topicId);
+		if(page>=0) {
+			List<VideosVO> videoVO = tService.getAllVideoInTopic(page, topicId);
+			return JSONResult.ok(videoVO);
+		}
+		return JSONResult.errorMsg("未知錯誤");
 	}
 
 }

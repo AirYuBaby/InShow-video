@@ -26,17 +26,27 @@ public class userController {
 	@Autowired
 	private usersService userservice;
 	@ApiOperation(value="查询用户信息",notes="查询用户信息的接口")
-	@ApiImplicitParam(name="userId",value="用户ID",required=true,dataType="String",paramType="query")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="userId",value="用户ID",required=true,dataType="String",paramType="query"),
+			@ApiImplicitParam(name="loginId",value="登录者ID",required=false,dataType="String",paramType="query")
+			
+	})
+	
+	
 	@PostMapping("/query")
-	public JSONResult query(String userId) throws Exception{
+	public JSONResult query(String userId,String loginId) throws Exception{
 		
-		System.out.println(userId);
+		System.out.println("用户ID:"+userId+"登录者Id:"+loginId);
 		if(StringUtils.isBlank(userId)) {
 			return JSONResult.errorMap("用户id不能为空");
 		}
 		Users userInfo = userservice.queryUserInfo(userId);
 		UsersVO usersVo =new UsersVO();
 		BeanUtils.copyProperties(userInfo, usersVo);
+		boolean fansPickuser = userservice.isfansPickuser(userId, loginId);
+		
+		usersVo.setFansPickuser(fansPickuser);
+		System.out.println(usersVo);
 		return JSONResult.ok(usersVo);
 		
 	}
@@ -52,6 +62,7 @@ public class userController {
 		if(StringUtils.isBlank(publisherId)) {
 			return JSONResult.errorMap("发布者id不能为空");
 		}
+		
 		//查询发布者信息
 		Users userInfo =userservice.queryUserInfo(publisherId);
 		UsersVO usersPublisher=new UsersVO();
@@ -60,22 +71,27 @@ public class userController {
 		boolean userLikevideo =userservice.isuserLikevideo(loginuserId,videoId);
 		//查询用户是否点赞该视频
 		boolean userClickvideo =userservice.isuserClickvideo(loginuserId, videoId);
+		
+		
 		publisherVideo pv =new publisherVideo();
 		pv.setPublisher(usersPublisher);
 		pv.setUserLikevideo(userLikevideo);
-		pv.setUserClickvideo(userClickvideo);	
+		pv.setUserClickvideo(userClickvideo);
+		
 		return JSONResult.ok(pv);
 	}
-	@ApiOperation(value="粉丝取消关注的接口",notes="粉丝取消关注用户的接口")
+	@ApiOperation(value="粉丝关注的接口",notes="粉丝关注用户的接口")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name="userId",value="用户ID（就是我的id）",required=true,dataType="String",paramType="form"),
-			@ApiImplicitParam(name="followId",value="被关注人id（就是对方的id）",required=true,dataType="String",paramType="form")
+			
+			@ApiImplicitParam(name="followId",value="被关注人id（就是对方的id）",required=true,dataType="String",paramType="form"),
+			@ApiImplicitParam(name="userId",value="用户ID（就是我的id）",required=true,dataType="String",paramType="form")
 	})
 	@PostMapping("/fanspick")
 	public JSONResult fanspick(String followId,String userId) {
 		if(StringUtils.isBlank(userId)||StringUtils.isBlank(followId)) {
-			return JSONResult.errorMsg("");
+			return JSONResult.errorMsg("出错啦");
 		}
+		System.out.println("*****************************"+followId+"/"+userId);
 		userservice.fansPickusers(followId, userId);
 		return JSONResult.ok("关注成功");
 	}
@@ -91,6 +107,6 @@ public class userController {
 			return JSONResult.errorMsg("数据出错");
 		}
 		userservice.fansUnpickusers(followId, userId);
-		return JSONResult.ok("关注成功");
+		return JSONResult.ok("取关成功");
 	}
 }

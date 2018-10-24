@@ -1,9 +1,7 @@
 package com.InShowVideo.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.InShowVideo.enums.VideoStatusEnum;
 import com.InShowVideo.pojo.Bgm;
 import com.InShowVideo.pojo.Videos;
 import com.InShowVideo.services.bgmService;
@@ -26,6 +23,7 @@ import com.InShowVideo.utils.FetchVideoCover;
 import com.InShowVideo.utils.JSONResult;
 import com.InShowVideo.utils.MergeVideoMp3;
 import com.InShowVideo.utils.PagedResult;
+import com.InShowVideo.utils.SheepMergeVideoMp3;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -53,26 +51,22 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "videoWidth", value = "视频宽度", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "videoHeight", value = "视频高度", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "desc", value = "视频描述", required = false, dataType = "String", paramType = "form"),
-			@ApiImplicitParam(name = "status", value = "视频状态", required = true, dataType = "String", paramType = "form"),
 			@ApiImplicitParam(name = "bgmPosition", value = "bgm的起始播放位置", required = true, dataType = "String", paramType = "form"), })
 	@PostMapping(value = "/uploadVideos", headers = "content-type=multipart/form-data")
 	public JSONResult uploadVideos(
 
-			String userId, String audioId, String topicId, String videoSecond, String videoWidth, String videoHeight,
-			String desc, String status, String bgmPosition, @ApiParam(value = "短视频", required = true) MultipartFile file)
+			String userId, String audioId, String topicId, double videoSecond, int videoWidth, int videoHeight,
+			String desc, int bgmPosition, @ApiParam(value = "短视频", required = true) MultipartFile file)
 			throws Exception {
-		System.out.println("-------vedioSecent------"+videoSecond);
-		int videoWidth2 = Integer.parseInt(videoWidth);
-		int videoHeight2 = Integer.parseInt(videoHeight);
-		int status2 = Integer.parseInt(status);
-		int bgmPosition2 = Integer.parseInt(bgmPosition);
-		double videoSecond2 = Double.parseDouble(videoSecond);
-		System.out.println("-------vedioSecent------"+videoSecond);
+		
 		if (StringUtils.isBlank(userId)) {
 			return JSONResult.errorMsg("用户Id不能为空");
 		}
-		String videoPathDB = "/" + userId + "/video";
+		String videoPathDB = "\\" + userId + "\\video";
+		//用来消音缓存文件地址
+		String videoAAAAADb = "\\" + userId + "\\video";
 		String coverPathDB = "/" + userId + "/video";
+		String _videoFinalPath = "";//也是用来消音缓存文件地址
 		String videoFinalPath = "";
 		FileOutputStream fileOutputStream = null;
 		InputStream inputStream = null;
@@ -88,8 +82,10 @@ public class videoController extends BasicController {
 					prefixName += arrrayFileName[i];
 
 				if (StringUtils.isNotBlank(prefixName)) {
-					videoFinalPath = FILESPACE + videoPathDB + "/" + fileName;
-					videoPathDB += ("/" + fileName);
+					videoFinalPath = FILESPACE + videoPathDB + "\\" + fileName;
+					videoPathDB += ("\\" + fileName);
+					//消音缓存文件地址
+					videoAAAAADb += ("\\_" + fileName);
 					coverPathDB += ("/" + prefixName + ".jpg");
 
 					File Ofile = new File(videoFinalPath);
@@ -120,17 +116,22 @@ public class videoController extends BasicController {
 			String audioInputPath = FILESPACE + bmg.getPath();
 
 			MergeVideoMp3 videoMp3 = new MergeVideoMp3(FFMPEG_EXE);
+			//*****这是带消音的合成
+			SheepMergeVideoMp3 SVM = new SheepMergeVideoMp3(FFMPEG_EXE);
 
 			String videoInputPath = videoFinalPath;
 
 			String videoOutputName = UUID.randomUUID().toString() + ".mp4";
 			videoPathDB = "/" + userId + "/video" + "/" + videoOutputName;
 			videoFinalPath = FILESPACE + videoPathDB;
-			videoMp3.convertor(videoInputPath, audioInputPath, bgmPosition2, videoSecond2, videoFinalPath);
+			//又是消音缓存文件的地址
+			_videoFinalPath = FILESPACE + videoAAAAADb;
+			//videoMp3.convertor(videoInputPath, audioInputPath, bgmPosition, videoSecond, videoFinalPath);
+			SVM.convertor(videoInputPath, audioInputPath, videoSecond, bgmPosition, _videoFinalPath, videoFinalPath);
 
 		}
 		if (StringUtils.isNotBlank(topicId)) {
-			System.out.println("------------------------------"+topicId);
+			System.out.println("topicID"+ "------------------------------"+topicId);
 			topicService.addVideotopic(topicId);
 		}
 
@@ -142,15 +143,15 @@ public class videoController extends BasicController {
 
 		video.setAudioId(audioId);
 		video.setUserId(userId);
-		video.setVideoSeconds((float) videoSecond2);
+		video.setVideoSeconds((float)videoSecond);
 		video.setCoverPath(coverPathDB);
 		video.setCreateTime(new Date());
 		video.setVideoDesc(desc);
-		video.setVideoHeight(videoHeight2);
-		video.setVideoWidth(videoWidth2);
+		video.setVideoHeight(videoHeight);
+		video.setVideoWidth(videoWidth);
 		video.setTopicId(topicId);
-		video.setBgmPosition(bgmPosition2);
-		video.setStatus(status2);
+		video.setBgmPosition(bgmPosition);
+		video.setStatus(1);
 		video.setVideoPath(videoPathDB);
 
 		String videoId = videoService.saveVideo(video);
@@ -180,6 +181,7 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "pageSize", value = "每页展示的视频数量", paramType = "form") })
 	@PostMapping("/showMylike")
 	public JSONResult showMylike(String userId, Integer page, Integer pageSize) {
+		System.out.println("有没有id啊："+userId);
 
 		if (StringUtils.isBlank(userId)) {
 			return JSONResult.errorMsg("");
@@ -219,7 +221,7 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "publisherId", value = "发布者Id", paramType = "form") })
 	@PostMapping("/userLikevideo")
 	public JSONResult userLikevideo(String userId, String videoId, String publisherId) {
-
+		
 		videoService.userLikevideos(userId, videoId, publisherId);
 		return JSONResult.ok();
 	}
@@ -229,7 +231,7 @@ public class videoController extends BasicController {
 			@ApiImplicitParam(name = "videoId", value = "视频Id", paramType = "form"), })
 	@PostMapping("/userClickvideo")
 	public JSONResult userClickvideo(String userId, String videoId) {
-		System.out.println("**************************"+userId+"**************"+videoId);
+		
 		videoService.userClickvideos(userId, videoId);
 		return JSONResult.ok();
 	}

@@ -50,7 +50,7 @@ public class IUsersService implements usersService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public boolean isuserLikevideo(String userId,String videoId) {
-
+		
 		if (StringUtils.isBlank(userId) || StringUtils.isBlank(videoId)) {
 			return false;
 		}
@@ -115,8 +115,7 @@ public class IUsersService implements usersService {
 			List<Users> u2 = userMapper.selectByExample(userExample);
 			if(u2.size()>0) {
 				user.setId(u2.get(0).getId());
-				System.out.println("----------------"+user.toString());
-				System.out.println("--------++++---------"+u2.toString());
+				
 				userMapper.updateByPrimaryKey(user);
 				return user;
 			}else {
@@ -133,15 +132,43 @@ public class IUsersService implements usersService {
 		Example example =new Example(UsersFans.class);
 		Criteria criteria = example.createCriteria();
 		
-		criteria.andEqualTo(followId);
-		criteria.andEqualTo(userId);
+		criteria.andEqualTo("userId",followId);
+		criteria.andEqualTo("fanId",userId);
 		
 		usersFansMapper.deleteByExample(example);
 		
 		userMapper.delectFansCounts(followId);
 		userMapper.delectFollowersCounts(userId);
 	}
+	@Override
+	public boolean isfansPickuser(String follewId, String userId) {
+		
+		if (StringUtils.isBlank(follewId) || StringUtils.isBlank(userId)) {
+			return false;
+		}
+		
+		Example example = new Example(UsersFans.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("userId", follewId);
+		criteria.andEqualTo("fanId", userId);
+		
+		List<UsersFans> list = usersFansMapper.selectByExample(example);
+		
+		if (list != null && list.size() >0) {
+			return true;
+		}
+		
+		return false;
+	}
 	
-	
+	public Users isInDb(String openId) {
+		Example example = new Example(Users.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("openid", openId);
+		Users user = userMapper.selectOneByExample(example);
+		return user;
+	}
 	
 }

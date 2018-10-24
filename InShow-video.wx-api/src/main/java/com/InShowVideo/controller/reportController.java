@@ -26,6 +26,7 @@ public class reportController {
 	public JSONResult userReportvideos(@RequestBody UsersReport userReport) {
 		
 		reportService.saveReport(userReport);
+		
 		return JSONResult.ok("举报成功");
 	}
 }

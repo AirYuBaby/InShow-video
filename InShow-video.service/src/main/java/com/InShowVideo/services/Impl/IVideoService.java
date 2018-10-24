@@ -43,21 +43,17 @@ public class IVideoService implements videoService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public PagedResult getAllVideos(int page) {
-		System.out.println("-------begin");
+		
 		PageHelper.startPage(page, 4);
 		List<VideosVO> videosVo = videosMapperCustom.getAllvideos();
-		System.out.println(videosVo);
-		System.out.println("----------开始分页");
-		System.out.println("----------分");
-
+		
+		PageInfo<VideosVO> pageList = new PageInfo<>(videosVo);
+		
 		PagedResult pagedResult = new PagedResult();
-		System.out.println("----------页");
-
-		System.out.println("----------啦");
-
-		pagedResult.setRows(videosVo);
 		pagedResult.setPage(page);
-		System.out.println("-------end");
+		pagedResult.setTotal(pageList.getPages());
+		pagedResult.setRows(videosVo);
+		pagedResult.setRecords(pageList.getTotal());
 		return pagedResult;
 	}
 
@@ -67,7 +63,6 @@ public class IVideoService implements videoService {
   
 		PageHelper.startPage(page, pageSize);
 		List<VideosVO> list = videosMapperCustom.queryMyLikeVideos(userId);
-				
 		PageInfo<VideosVO> pageList = new PageInfo<>(list);
 		
 		PagedResult pagedResult = new PagedResult();
@@ -81,6 +76,7 @@ public class IVideoService implements videoService {
 
 	@Override
 	public void userLikevideos(String userId, String videoId, String publisherId) {
+		
 		String ulvId=sid.nextShort();
 		
 		UsersLikeVideos ulv = new UsersLikeVideos();

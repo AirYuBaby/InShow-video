@@ -45,31 +45,21 @@ public class loginController<K> extends BasicController{
 				dataType="String", paramType="form"),
 		@ApiImplicitParam(name="rawsData", value="JSON格式user数据", required=true, 
 		dataType="String", paramType="form"),
-		@ApiImplicitParam(name="appID", value="appId", required=true, 
-		dataType="String", paramType="form"),
-		@ApiImplicitParam(name="appSecret", value="appSecret", required=true, 
-		dataType="String", paramType="form"),
+		
 		//query
 	}) 
 	//@RequestBody
 	@PostMapping("/login")
 	public JSONResult login( String js_code,
-			 String rawsData,
-			 String appID,
-			 String appSecret) {
-//		if(StringUtils.isNotBlank(jsCode)) {
-			//appid跟appsecret都是注册小程序后才存在的常量
-		System.out.println("----appID-----"+appID);
-		System.out.println("****appSecret******"+appSecret);
+			 String rawsData
+			 ) {
 			if(js_code.indexOf("{")==0) {
 				js_code = new JSONObject(js_code).getString("js_code");
 			}
 			
-//			String appID = "wx1d4ad7d9f581827a";
-//			String appSecret = "91bc5b1a6aa524fbc9f47318da4cac15";
-//			String appID = "wx2d76ca429ca918c5";
-//			String appSecret = "ea4732a65b68b241581a167e58899967";
-			//测试用假数据
+			String appID = "wxa35bbd6556297ebd";
+			String appSecret = "76d8c34dde69c14683bfc7519636900a";
+
 			String openid = "";
 			String code =js_code;
 			System.out.println("******************************"+code);
@@ -85,38 +75,33 @@ public class loginController<K> extends BasicController{
 				
 				JSONObject userInfo = new JSONObject(rawsData);
 				System.out.println("********************************"+userInfo.toString());
-//				RestTemplate restTemplate =new RestTemplate();
-//				
-//				ResponseEntity<String> responseEntity =restTemplate.exchange(wxUrl, HttpMethod.GET,null,String.class);
-//				if(responseEntity!=null&&responseEntity.getStatusCode()==HttpStatus.OK) {
-//					String sessionData =responseEntity.getBody();
-//					Gson gson = new Gson();
-//					data = gson.fromJson(sessionData, JSONObject.class);
-//					openid = data.getString("openId");
-//					String key = data.getString("session_key");
-//				}
-				
 
-
-				System.out.println(openid);
-				Users user = new Users();
-				user.setOpenid(openid);
-				user.setUsername(userInfo.getString("nickName"));
-				user.setNickname(userInfo.getString("nickName")); 
-				user.setAvatarurl(userInfo.getString("avatarUrl")); 
-//				user.setGender(Integer.valueOf(gender)); 
-				user.setGender(userInfo.getInt("gender"));
-				user.setCity(userInfo.getString("city"));
-//				user.setProvince(userInfo.getString(" "));
-				user.setProvince(userInfo.getString("province")); 
-				user.setCountry(userInfo.getString("country")); 
-				user.setFansCounts(0);
-				user.setFollowCounts(0);
-				user.setReceiveLikeCounts(0);
-				user.setReportCounts(0);
+				Users u2 = null;
 				
+				if(service.isInDb(openid)!=null) {
+					u2 = service.isInDb(openid);
+				}else {
+					System.out.println(openid);
+					Users user = new Users();
+					user.setOpenid(openid);
+					user.setUsername(userInfo.getString("nickName"));
+					user.setNickname(userInfo.getString("nickName")); 
+					user.setAvatarurl(userInfo.getString("avatarUrl")); 
+//					user.setGender(Integer.valueOf(gender)); 
+					user.setGender(userInfo.getInt("gender"));
+					user.setCity(userInfo.getString("city"));
+//					user.setProvince(userInfo.getString(" "));
+					user.setProvince(userInfo.getString("province")); 
+					user.setCountry(userInfo.getString("country")); 
+					user.setFansCounts(0);
+					user.setFollowCounts(0);
+					user.setReceiveLikeCounts(0);
+					user.setReportCounts(0);
+					
+					
+					u2 = service.updataUser(user);
+				}
 				
-				Users u2 = service.updataUser(user);
 				System.out.println("--------------入库完毕");
 				if(u2!=null) {
 					String token = setUserRedisSessionToken(u2);
@@ -124,10 +109,10 @@ public class loginController<K> extends BasicController{
 					System.out.println("token-----------"+redis.get(USER_REDIS_SESSION + ":" + u2.getId()));
 					map.put("userid", u2.getId());
 					map.put("token", token);
-					
-					JSONResult.ok(map);
+					 
+					return	JSONResult.ok(map);
 				}else {
-					JSONResult.errorMsg("未知错误，登陆信息无法校验");
+					return JSONResult.errorMsg("未知错误，登陆信息无法校验");
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -143,10 +128,5 @@ public class loginController<K> extends BasicController{
 		redis.set(USER_REDIS_SESSION + ":" + userModel.getId(), uniqueToken, 1000 * 60 * 30);
 		return uniqueToken;
 	}
-	@PostMapping("/login2")
-	public JSONResult login2(
-			String js_code) {
-		System.out.println("------------"+js_code);
-		return JSONResult.ok(js_code);
-	}
+	
 }
